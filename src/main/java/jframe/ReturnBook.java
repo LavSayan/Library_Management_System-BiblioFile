@@ -229,13 +229,13 @@ public class ReturnBook extends javax.swing.JFrame {
         lbl_bookError = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel72 = new javax.swing.JLabel();
-        jPanel34 = new javax.swing.JPanel();
         txt_bookId = new app.bolivia.swing.JCTextField();
         jLabel92 = new javax.swing.JLabel();
         txt_userId = new app.bolivia.swing.JCTextField();
         jLabel96 = new javax.swing.JLabel();
         rSMaterialButtonCircle3 = new rojerusan.RSMaterialButtonCircle();
         rSMaterialButtonCircle4 = new rojerusan.RSMaterialButtonCircle();
+        jPanel34 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -814,13 +814,13 @@ public class ReturnBook extends javax.swing.JFrame {
         lbl_bookError.setForeground(new java.awt.Color(255, 255, 51));
         jPanel2.add(lbl_bookError, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 660, 320, 40));
 
-        panel_main.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, 420, 820));
+        panel_main.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 0, 430, 820));
 
         jLabel1.setFont(new java.awt.Font("Serif", 1, 25)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(120, 27, 27));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Books_52px_1.png"))); // NOI18N
         jLabel1.setText("Return Book");
-        panel_main.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 200, -1));
+        panel_main.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 250, -1));
 
         jLabel72.setBackground(new java.awt.Color(120, 27, 27));
         jLabel72.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
@@ -832,21 +832,6 @@ public class ReturnBook extends javax.swing.JFrame {
             }
         });
         panel_main.add(jLabel72, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 50, 70));
-
-        jPanel34.setBackground(new java.awt.Color(120, 27, 27));
-
-        javax.swing.GroupLayout jPanel34Layout = new javax.swing.GroupLayout(jPanel34);
-        jPanel34.setLayout(jPanel34Layout);
-        jPanel34Layout.setHorizontalGroup(
-            jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel34Layout.setVerticalGroup(
-            jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        panel_main.add(jPanel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 240, 5));
 
         txt_bookId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(120, 27, 27)));
         txt_bookId.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
@@ -862,12 +847,12 @@ public class ReturnBook extends javax.swing.JFrame {
                 txt_bookIdActionPerformed(evt);
             }
         });
-        panel_main.add(txt_bookId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 270, 280, 40));
+        panel_main.add(txt_bookId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 280, 40));
 
         jLabel92.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel92.setForeground(new java.awt.Color(120, 27, 27));
         jLabel92.setText("Book Id : ");
-        panel_main.add(jLabel92, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, 70, -1));
+        panel_main.add(jLabel92, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, 70, -1));
 
         txt_userId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(120, 27, 27)));
         txt_userId.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
@@ -883,12 +868,12 @@ public class ReturnBook extends javax.swing.JFrame {
                 txt_userIdActionPerformed(evt);
             }
         });
-        panel_main.add(txt_userId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 400, 280, 40));
+        panel_main.add(txt_userId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 480, 280, 40));
 
         jLabel96.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel96.setForeground(new java.awt.Color(120, 27, 27));
         jLabel96.setText("User Id : ");
-        panel_main.add(jLabel96, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, 70, -1));
+        panel_main.add(jLabel96, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, 70, -1));
 
         rSMaterialButtonCircle3.setBackground(new java.awt.Color(120, 27, 27));
         rSMaterialButtonCircle3.setBorder(new javax.swing.border.MatteBorder(null));
@@ -898,7 +883,7 @@ public class ReturnBook extends javax.swing.JFrame {
                 rSMaterialButtonCircle3ActionPerformed(evt);
             }
         });
-        panel_main.add(rSMaterialButtonCircle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 540, 340, 60));
+        panel_main.add(rSMaterialButtonCircle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 600, 340, 60));
 
         rSMaterialButtonCircle4.setBackground(new java.awt.Color(120, 27, 27));
         rSMaterialButtonCircle4.setBorder(new javax.swing.border.MatteBorder(null));
@@ -908,12 +893,27 @@ public class ReturnBook extends javax.swing.JFrame {
                 rSMaterialButtonCircle4ActionPerformed(evt);
             }
         });
-        panel_main.add(rSMaterialButtonCircle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 630, 340, 60));
+        panel_main.add(rSMaterialButtonCircle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 690, 340, 60));
 
-        getContentPane().add(panel_main, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1420, 820));
+        jPanel34.setBackground(new java.awt.Color(120, 27, 27));
+
+        javax.swing.GroupLayout jPanel34Layout = new javax.swing.GroupLayout(jPanel34);
+        jPanel34.setLayout(jPanel34Layout);
+        jPanel34Layout.setHorizontalGroup(
+            jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 340, Short.MAX_VALUE)
+        );
+        jPanel34Layout.setVerticalGroup(
+            jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        panel_main.add(jPanel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, -1, 5));
+
+        getContentPane().add(panel_main, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 850, 820));
         panel_main.getAccessibleContext().setAccessibleName("");
 
-        setSize(new java.awt.Dimension(1411, 803));
+        setSize(new java.awt.Dimension(852, 803));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 

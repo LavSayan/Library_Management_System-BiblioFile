@@ -252,12 +252,12 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/AddNewBookIcons/icons8_Collaborator_Male_26px.png"/>
+              <Image iconType="3" name="/AddNewBookIcons/icons8_Collaborator_Male_35px.png"/>
             </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="70" y="460" width="60" height="60"/>
+              <AbsoluteConstraints x="80" y="470" width="40" height="50"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -428,7 +428,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="420" y="160" width="280" height="60"/>
+              <AbsoluteConstraints x="420" y="110" width="310" height="110"/>
             </Constraint>
           </Constraints>
         </Component>
