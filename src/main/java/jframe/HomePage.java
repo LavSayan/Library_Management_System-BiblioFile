@@ -179,13 +179,13 @@ public class HomePage extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Rockwell Extra Bold", 1, 25)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("X");
+        jLabel8.setText("    X");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1840, 0, 70, 70));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1830, 0, 70, 70));
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, -1, -1));
 
         jLabel37.setFont(new java.awt.Font("Serif", 1, 25)); // NOI18N
@@ -336,6 +336,17 @@ public class HomePage extends javax.swing.JFrame {
         jLabel51.setForeground(new java.awt.Color(153, 153, 153));
         jLabel51.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/icons8_Sell_26px.png"))); // NOI18N
         jLabel51.setText("    Issue Book");
+        jLabel51.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel51MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel51MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel51MouseExited(evt);
+            }
+        });
         jPanel13.add(jLabel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 200, 60));
 
         jPanel4.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, -1, 60));
@@ -578,7 +589,7 @@ public class HomePage extends javax.swing.JFrame {
 
         getContentPane().add(jPanel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, 1580, 960));
 
-        setSize(new java.awt.Dimension(1905, 1023));
+        setSize(new java.awt.Dimension(1907, 1023));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -619,6 +630,23 @@ public class HomePage extends javax.swing.JFrame {
         users.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel49MouseClicked
+
+    private void jLabel51MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel51MouseEntered
+        // TODO add your handling code here:
+        jPanel13.setBackground(mouseEnterColor);
+    }//GEN-LAST:event_jLabel51MouseEntered
+
+    private void jLabel51MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel51MouseClicked
+        // TODO add your handling code here:
+        IssueBook issueBook = new IssueBook();
+        issueBook.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel51MouseClicked
+
+    private void jLabel51MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel51MouseExited
+        // TODO add your handling code here:
+        jPanel13.setBackground(mouseExitColor);
+    }//GEN-LAST:event_jLabel51MouseExited
 
     /**
      * @param args the command line arguments

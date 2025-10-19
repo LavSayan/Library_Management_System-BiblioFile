@@ -53,7 +53,7 @@ public class ManageBooks extends javax.swing.JFrame {
                 model.addRow(obj);
             }
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
     }
@@ -84,7 +84,7 @@ public class ManageBooks extends javax.swing.JFrame {
                 isAdded = false;
             }
         } catch(Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
         return isAdded;
     }
@@ -115,7 +115,7 @@ public class ManageBooks extends javax.swing.JFrame {
                 isUpdated = false;
             }
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
         return isUpdated;
     }
@@ -138,7 +138,7 @@ public class ManageBooks extends javax.swing.JFrame {
                 isDeleted = false;
             }
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
         return isDeleted;
     }

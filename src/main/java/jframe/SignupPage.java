@@ -206,7 +206,7 @@ public class SignupPage extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Rockwell Extra Bold", 1, 25)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("X");
+        jLabel8.setText("    X");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
@@ -528,15 +528,15 @@ public class SignupPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        System.exit(0);
-    }//GEN-LAST:event_jLabel8MouseClicked
-
     private void txt_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusLost
         if (checkDuplicateUser() == true) {
             JOptionPane.showMessageDialog(this, "username already exist");
         }
     }//GEN-LAST:event_txt_usernameFocusLost
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jLabel8MouseClicked
 
     /**
      * @param args the command line arguments

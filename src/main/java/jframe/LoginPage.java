@@ -61,12 +61,12 @@ public class LoginPage extends javax.swing.JFrame {
             
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                JOptionPane.showMessageDialog(this, "login successful");
+                JOptionPane.showMessageDialog(this, "Login Successful");
                 HomePage home = new HomePage();
                 home.setVisible(true);
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "incorrect credentials");
+                JOptionPane.showMessageDialog(this, "Incorrect Credentials");
             }
             
         } catch (Exception e){
@@ -174,7 +174,7 @@ public class LoginPage extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Rockwell Extra Bold", 1, 25)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("X");
+        jLabel8.setText("    X");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
