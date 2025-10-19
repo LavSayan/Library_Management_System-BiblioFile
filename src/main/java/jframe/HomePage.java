@@ -302,8 +302,11 @@ public class HomePage extends javax.swing.JFrame {
         jLabel49.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
         jLabel49.setForeground(new java.awt.Color(153, 153, 153));
         jLabel49.setIcon(new javax.swing.ImageIcon(getClass().getResource("/adminIcons/icons8_Read_Online_26px.png"))); // NOI18N
-        jLabel49.setText("    Manage Students");
+        jLabel49.setText("    Manage Users");
         jLabel49.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel49MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel49MouseEntered(evt);
             }
@@ -609,6 +612,13 @@ public class HomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
         jPanel11.setBackground(mouseExitColor);
     }//GEN-LAST:event_jLabel49MouseExited
+
+    private void jLabel49MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel49MouseClicked
+        // TODO add your handling code here:
+        ManageUsers users = new ManageUsers();
+        users.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel49MouseClicked
 
     /**
      * @param args the command line arguments

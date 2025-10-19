@@ -195,7 +195,7 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Name");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, 170, -1));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 170, -1));
 
         txt_userName.setBackground(new java.awt.Color(120, 27, 27));
         txt_userName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
@@ -212,12 +212,12 @@ public class ManageUsers extends javax.swing.JFrame {
                 txt_userNameActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_userName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 360, 40));
+        jPanel1.add(txt_userName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 330, 360, 40));
 
         jLabel13.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Select Membership Type");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 380, 170, -1));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 450, 170, -1));
 
         rSMaterialButtonCircle2.setBackground(new java.awt.Color(255, 255, 255));
         rSMaterialButtonCircle2.setBorder(new javax.swing.border.MatteBorder(null));
@@ -255,7 +255,7 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel34.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(255, 255, 255));
         jLabel34.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Moleskine_26px.png"))); // NOI18N
-        jPanel1.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 50, 40));
+        jPanel1.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 330, 50, 40));
 
         jLabel35.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(255, 255, 255));
@@ -265,7 +265,7 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel36.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel36.setForeground(new java.awt.Color(255, 255, 255));
         jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Collaborator_Male_26px.png"))); // NOI18N
-        jPanel1.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 390, 60, 60));
+        jPanel1.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 460, 60, 60));
 
         jLabel72.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel72.setForeground(new java.awt.Color(255, 255, 255));
@@ -284,7 +284,7 @@ public class ManageUsers extends javax.swing.JFrame {
 
         combo_membershipType.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         combo_membershipType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Scribe" }));
-        jPanel1.add(combo_membershipType, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 410, 360, 40));
+        jPanel1.add(combo_membershipType, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 480, 360, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 580, 830));
 

@@ -25,7 +25,7 @@ public class ManageBooks extends javax.swing.JFrame {
      */
     
     String bookName, author;
-    int bookId, quantity;
+    int bookId, quantity, bookPrice;
     DefaultTableModel model;
     
     public ManageBooks() {
@@ -46,8 +46,9 @@ public class ManageBooks extends javax.swing.JFrame {
                 String bookName = rs.getString("book_name");
                 String author = rs.getString("author");
                 int quantity = rs.getInt("quantity");
+                int bookPrice = rs.getInt("book_price");
                 
-                Object[] obj = {bookId, bookName, author, quantity};
+                Object[] obj = {bookId, bookName, author, quantity, bookPrice};
                 model =(DefaultTableModel) tbl_bookDetails.getModel();
                 model.addRow(obj);
             }
@@ -64,15 +65,17 @@ public class ManageBooks extends javax.swing.JFrame {
         bookName = txt_bookName.getText();
         author = txt_authorName.getText();
         quantity = Integer.parseInt(txt_quantity.getText());
+        bookPrice = Integer.parseInt(txt_bookPrice.getText());
         
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "insert into book_details value (?,?,?,?)";
+            String sql = "insert into book_details value (?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, bookId);
             pst.setString(2, bookName);
             pst.setString(3, author);
             pst.setInt(4, quantity);
+            pst.setInt(5, bookPrice);
             
             int rowCount = pst.executeUpdate();
             if (rowCount > 0) {
@@ -93,15 +96,17 @@ public class ManageBooks extends javax.swing.JFrame {
         bookName = txt_bookName.getText();
         author = txt_authorName.getText();
         quantity = Integer.parseInt(txt_quantity.getText());
+        bookPrice = Integer.parseInt(txt_bookPrice.getText());
         
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "update book_details set book_name = ?,author = ?,quantity = ? where book_id = ?";
+            String sql = "update book_details set book_name = ?,author = ?,quantity = ?,book_price = ? where book_id = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, bookName);
             pst.setString(2, author);
             pst.setInt(3, quantity);
-            pst.setInt(4, bookId);
+            pst.setInt(4, bookPrice);
+            pst.setInt(5, bookId);
             
             int rowCount = pst.executeUpdate();
             if (rowCount > 0) {
@@ -172,7 +177,7 @@ public class ManageBooks extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
-        txt_quantity1 = new app.bolivia.swing.JCTextField();
+        txt_bookPrice = new app.bolivia.swing.JCTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_bookDetails = new rojeru_san.complementos.RSTableMetro();
@@ -345,24 +350,24 @@ public class ManageBooks extends javax.swing.JFrame {
         jLabel31.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(255, 255, 255));
         jLabel31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/price_tag.png"))); // NOI18N
-        jPanel1.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 550, 50, 40));
+        jPanel1.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 550, 50, 40));
 
-        txt_quantity1.setBackground(new java.awt.Color(120, 27, 27));
-        txt_quantity1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        txt_quantity1.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
-        txt_quantity1.setPhColor(new java.awt.Color(255, 255, 255));
-        txt_quantity1.setPlaceholder("Enter Price....");
-        txt_quantity1.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_bookPrice.setBackground(new java.awt.Color(120, 27, 27));
+        txt_bookPrice.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_bookPrice.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
+        txt_bookPrice.setPhColor(new java.awt.Color(255, 255, 255));
+        txt_bookPrice.setPlaceholder("Enter Price....");
+        txt_bookPrice.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txt_quantity1FocusLost(evt);
+                txt_bookPriceFocusLost(evt);
             }
         });
-        txt_quantity1.addActionListener(new java.awt.event.ActionListener() {
+        txt_bookPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_quantity1ActionPerformed(evt);
+                txt_bookPriceActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_quantity1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 550, 360, 40));
+        jPanel1.add(txt_bookPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 550, 360, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 580, 830));
 
@@ -501,15 +506,16 @@ public class ManageBooks extends javax.swing.JFrame {
         txt_bookName.setText(model.getValueAt(rowNo, 1).toString());
         txt_authorName.setText(model.getValueAt(rowNo, 2).toString());
         txt_quantity.setText(model.getValueAt(rowNo, 3).toString());
+        txt_bookPrice.setText(model.getValueAt(rowNo, 4).toString());
     }//GEN-LAST:event_tbl_bookDetailsMouseClicked
 
-    private void txt_quantity1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_quantity1FocusLost
+    private void txt_bookPriceFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_bookPriceFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_quantity1FocusLost
+    }//GEN-LAST:event_txt_bookPriceFocusLost
 
-    private void txt_quantity1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_quantity1ActionPerformed
+    private void txt_bookPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_bookPriceActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_quantity1ActionPerformed
+    }//GEN-LAST:event_txt_bookPriceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -560,7 +566,7 @@ public class ManageBooks extends javax.swing.JFrame {
     private app.bolivia.swing.JCTextField txt_authorName;
     private app.bolivia.swing.JCTextField txt_bookId;
     private app.bolivia.swing.JCTextField txt_bookName;
+    private app.bolivia.swing.JCTextField txt_bookPrice;
     private app.bolivia.swing.JCTextField txt_quantity;
-    private app.bolivia.swing.JCTextField txt_quantity1;
     // End of variables declaration//GEN-END:variables
 }
