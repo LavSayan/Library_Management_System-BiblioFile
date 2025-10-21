@@ -32,17 +32,16 @@ public class SignupPage extends javax.swing.JFrame {
         String name = txt_username. getText();
         String pwd = txt_password.getText();
         String email = txt_email.getText();
-        String contact = txt_contact.getText();
         
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "insert into users(name, password, email, contact) values(?,?,?,?)";
+            String sql = "insert into users(name, password, email) values(?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
             
             pst.setString(1, name);
             pst.setString(2, pwd);
             pst.setString(3, email);
-            pst.setString(4, contact);
+
             
             int updateRowCount = pst.executeUpdate();
             
@@ -65,7 +64,7 @@ public class SignupPage extends javax.swing.JFrame {
         String name = txt_username. getText();
         String pwd = txt_password.getText();
         String email = txt_email.getText();
-        String contact = txt_contact.getText();
+        
         
         if (name.equals("")) {
             JOptionPane.showMessageDialog(this, "please enter username");
@@ -82,10 +81,6 @@ public class SignupPage extends javax.swing.JFrame {
             return false;
         }
         
-        if (contact.equals("")) {
-            JOptionPane.showMessageDialog(this, "please enter contact number");
-            return false;
-        }
         
         return true;
     }
@@ -162,9 +157,6 @@ public class SignupPage extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
-        jLabel35 = new javax.swing.JLabel();
-        txt_contact = new app.bolivia.swing.JCTextField();
-        jLabel36 = new javax.swing.JLabel();
         txt_email = new app.bolivia.swing.JCTextField();
         rSMaterialButtonCircle1 = new rojerusan.RSMaterialButtonCircle();
         rSMaterialButtonCircle2 = new rojerusan.RSMaterialButtonCircle();
@@ -180,17 +172,17 @@ public class SignupPage extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Serif", 1, 60)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(120, 27, 27));
         jLabel2.setText("BiblioFile");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 137, 260, 80));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 260, 80));
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/signup-library-icon.png"))); // NOI18N
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 780, 590));
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/signuppage.png"))); // NOI18N
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 990, 600));
 
         jLabel7.setFont(new java.awt.Font("Serif", 0, 30)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(120, 27, 27));
         jLabel7.setText("Welcome To");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 170, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 170, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 990, 830));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 830));
 
         jPanel2.setBackground(new java.awt.Color(120, 27, 27));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -387,7 +379,7 @@ public class SignupPage extends javax.swing.JFrame {
         jLabel31.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(255, 255, 255));
         jLabel31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Forgot_Password_50px_4.png"))); // NOI18N
-        jPanel2.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 60, 50));
+        jPanel2.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 60, 50));
 
         txt_password.setBackground(new java.awt.Color(120, 27, 27));
         txt_password.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
@@ -399,44 +391,22 @@ public class SignupPage extends javax.swing.JFrame {
                 txt_passwordActionPerformed(evt);
             }
         });
-        jPanel2.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 370, 360, 40));
+        jPanel2.add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 410, 360, 40));
 
         jLabel32.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(255, 255, 255));
         jLabel32.setText("Password");
-        jPanel2.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 340, 170, -1));
+        jPanel2.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 170, -1));
 
         jLabel33.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 255, 255));
         jLabel33.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Secured_Letter_50px.png"))); // NOI18N
-        jPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 470, 60, 50));
+        jPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 550, 60, 50));
 
         jLabel34.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(255, 255, 255));
         jLabel34.setText("Email");
-        jPanel2.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 450, 170, -1));
-
-        jLabel35.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
-        jLabel35.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_Google_Mobile_50px.png"))); // NOI18N
-        jPanel2.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 580, 60, 50));
-
-        txt_contact.setBackground(new java.awt.Color(120, 27, 27));
-        txt_contact.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
-        txt_contact.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
-        txt_contact.setPhColor(new java.awt.Color(255, 255, 255));
-        txt_contact.setPlaceholder("Enter Contact no....");
-        txt_contact.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_contactActionPerformed(evt);
-            }
-        });
-        jPanel2.add(txt_contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 580, 360, 40));
-
-        jLabel36.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
-        jLabel36.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel36.setText("Contact");
-        jPanel2.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 550, 170, -1));
+        jPanel2.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 530, 170, -1));
 
         txt_email.setBackground(new java.awt.Color(120, 27, 27));
         txt_email.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
@@ -448,7 +418,7 @@ public class SignupPage extends javax.swing.JFrame {
                 txt_emailActionPerformed(evt);
             }
         });
-        jPanel2.add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, 360, 40));
+        jPanel2.add(txt_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 560, 360, 40));
 
         rSMaterialButtonCircle1.setBackground(new java.awt.Color(255, 255, 255));
         rSMaterialButtonCircle1.setBorder(new javax.swing.border.MatteBorder(null));
@@ -477,7 +447,7 @@ public class SignupPage extends javax.swing.JFrame {
         jLabel37.setText("Signup Page");
         jPanel2.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 170, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, -20, 530, 830));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 0, 530, 830));
 
         setSize(new java.awt.Dimension(1523, 828));
         setLocationRelativeTo(null);
@@ -506,10 +476,6 @@ public class SignupPage extends javax.swing.JFrame {
     private void txt_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_emailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_emailActionPerformed
-
-    private void txt_contactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contactActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_contactActionPerformed
 
     private void rSMaterialButtonCircle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle1ActionPerformed
         // TODO add your handling code here:
@@ -593,8 +559,6 @@ public class SignupPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
-    private javax.swing.JLabel jLabel35;
-    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -608,7 +572,6 @@ public class SignupPage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle1;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle2;
-    private app.bolivia.swing.JCTextField txt_contact;
     private app.bolivia.swing.JCTextField txt_email;
     private app.bolivia.swing.JCTextField txt_password;
     private app.bolivia.swing.JCTextField txt_username;

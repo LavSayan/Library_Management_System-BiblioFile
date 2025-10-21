@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,26 +17,27 @@ import javax.swing.table.DefaultTableModel;
  * @author brizu
  */
 public class ViewRecords extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ViewRecords.class.getName());
 
     /**
      * Creates new form ViewAllRecord
      */
     DefaultTableModel model;
+
     public ViewRecords() {
         initComponents();
         setIssueBookDetails();
     }
-        
+
     //inputs the user details in the table
-    public void setIssueBookDetails(){
-        
+    public void setIssueBookDetails() {
+
         try {
             Connection con = DBConnection.getConnection();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from issue_book_details");   
-            
+            ResultSet rs = st.executeQuery("select * from issue_book_details");
+
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
@@ -43,9 +45,9 @@ public class ViewRecords extends javax.swing.JFrame {
                 String issueDate = rs.getString("issue_date");
                 String dueDate = rs.getString("due_date");
                 String status = rs.getString("status");
-                
-                Object[] obj = {id,bookName,userName,issueDate,dueDate,status};
-                model =(DefaultTableModel) tbl_issueBookDetails.getModel();
+
+                Object[] obj = {id, bookName, userName, issueDate, dueDate, status};
+                model = (DefaultTableModel) tbl_issueBookDetails.getModel();
                 model.addRow(obj);
             }
         } catch (Exception e) {
@@ -53,47 +55,67 @@ public class ViewRecords extends javax.swing.JFrame {
         }
 
     }
-    
+
     //to clear table 
-    public void clearTable(){
+    public void clearTable() {
         DefaultTableModel model = (DefaultTableModel) tbl_issueBookDetails.getModel();
         model.setRowCount(0);
     }
-    
+
     //to fetch the record using date fields 
-    public void search(){
-        Date uFromDate = date_fromDate.getDatoFecha();
-        Date uToDate = date_toDate.getDatoFecha();
-        
-        long l1 = uFromDate.getTime();
-        long l2 = uToDate.getTime();
-        
-        java.sql.Date fromDate = new java.sql.Date(l1);
-        java.sql.Date toDate = new java.sql.Date(l2);
-        
-        try {
-            Connection con = DBConnection.getConnection();
-            String sql = "select * from issue_book_details where issue_date BETWEEN ? and ?";
-            PreparedStatement pst = con.prepareStatement(sql);
+    public void search() {
+        // 1) validate date pickers
+        java.util.Date uFromDate = date_fromDate.getDatoFecha();
+        java.util.Date uToDate = date_toDate.getDatoFecha();
+
+        if (uFromDate == null || uToDate == null) {
+            JOptionPane.showMessageDialog(this, "Please select both From and To dates");
+            return;
+        }
+
+        if (uFromDate.after(uToDate)) {
+            JOptionPane.showMessageDialog(this, "'From' date must be before or equal to 'To' date");
+            return;
+        }
+
+        // convert to java.sql.Date (drops time-of-day)
+        java.sql.Date fromDate = new java.sql.Date(uFromDate.getTime());
+        java.sql.Date toDate = new java.sql.Date(uToDate.getTime());
+
+        String sql = "SELECT * FROM issue_book_details WHERE issue_date BETWEEN ? AND ?";
+
+        // 2) prepare table model and clear previous results
+        DefaultTableModel model = (DefaultTableModel) tbl_issueBookDetails.getModel();
+        model.setRowCount(0); // clear existing rows
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setDate(1, fromDate);
             pst.setDate(2, toDate);
-            
-            ResultSet rs = pst.executeQuery();
-            
-            while (rs.next()) {
-                String id = rs.getString("id");
-                String bookName = rs.getString("book_name");
-                String userName = rs.getString("user_name");
-                String issueDate = rs.getString("issue_date");
-                String dueDate = rs.getString("due_date");
-                String status = rs.getString("status");
-                
-                Object[] obj = {id,bookName,userName,issueDate,dueDate,status};
-                model =(DefaultTableModel) tbl_issueBookDetails.getModel();
-                model.addRow(obj);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (!rs.next()) {
+                    JOptionPane.showMessageDialog(this, "No Record Found");
+                    return;
+                }
+
+                // process first row and the rest (do-while avoids skipping first)
+                do {
+                    String id = rs.getString("id");
+                    String bookName = rs.getString("book_name");
+                    String userName = rs.getString("user_name");
+                    String issueDate = rs.getString("issue_date");
+                    String dueDate = rs.getString("due_date");
+                    String status = rs.getString("status");
+
+                    Object[] obj = {id, bookName, userName, issueDate, dueDate, status};
+                    model.addRow(obj);
+                } while (rs.next());
             }
+
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error fetching records");
         }
     }
 
@@ -115,6 +137,7 @@ public class ViewRecords extends javax.swing.JFrame {
         jLabel94 = new javax.swing.JLabel();
         date_toDate = new rojeru_san.componentes.RSDateChooser();
         rSMaterialButtonCircle3 = new rojerusan.RSMaterialButtonCircle();
+        rSMaterialButtonCircle4 = new rojerusan.RSMaterialButtonCircle();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_issueBookDetails = new rojeru_san.complementos.RSTableMetro();
@@ -139,8 +162,8 @@ public class ViewRecords extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Serif", 1, 25)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Literature_100px_1.png"))); // NOI18N
-        jLabel2.setText("    Issued Books");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 20, 280, -1));
+        jLabel2.setText("    Records Details");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 20, 300, -1));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -159,8 +182,8 @@ public class ViewRecords extends javax.swing.JFrame {
 
         jLabel93.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel93.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel93.setText("Issue Date : ");
-        jPanel1.add(jLabel93, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 90, -1));
+        jLabel93.setText("Start Date : ");
+        jPanel1.add(jLabel93, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 90, -1));
 
         date_fromDate.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
         date_fromDate.setColorBackground(new java.awt.Color(120, 27, 27));
@@ -171,12 +194,12 @@ public class ViewRecords extends javax.swing.JFrame {
         date_fromDate.setFormatoFecha("dd/MM/yyyy");
         date_fromDate.setFuente(new java.awt.Font("Serif", 1, 17)); // NOI18N
         date_fromDate.setPlaceholder("Select Issue Date....");
-        jPanel1.add(date_fromDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, 360, -1));
+        jPanel1.add(date_fromDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 360, -1));
 
         jLabel94.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel94.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel94.setText("Issue Date : ");
-        jPanel1.add(jLabel94, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 200, 90, -1));
+        jLabel94.setText("End Date : ");
+        jPanel1.add(jLabel94, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 200, 90, -1));
 
         date_toDate.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 255, 255)));
         date_toDate.setColorBackground(new java.awt.Color(120, 27, 27));
@@ -186,19 +209,30 @@ public class ViewRecords extends javax.swing.JFrame {
         date_toDate.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         date_toDate.setFormatoFecha("dd/MM/yyyy");
         date_toDate.setFuente(new java.awt.Font("Serif", 1, 17)); // NOI18N
-        date_toDate.setPlaceholder("Select Issue Date....");
-        jPanel1.add(date_toDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 190, 360, -1));
+        date_toDate.setPlaceholder("Select Due Date....");
+        jPanel1.add(date_toDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 190, 360, -1));
 
         rSMaterialButtonCircle3.setBackground(new java.awt.Color(255, 255, 255));
         rSMaterialButtonCircle3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         rSMaterialButtonCircle3.setForeground(new java.awt.Color(120, 27, 27));
-        rSMaterialButtonCircle3.setText("SEARCH");
+        rSMaterialButtonCircle3.setText("RESET");
         rSMaterialButtonCircle3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rSMaterialButtonCircle3ActionPerformed(evt);
             }
         });
-        jPanel1.add(rSMaterialButtonCircle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 180, 230, 60));
+        jPanel1.add(rSMaterialButtonCircle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1270, 180, 180, 60));
+
+        rSMaterialButtonCircle4.setBackground(new java.awt.Color(255, 255, 255));
+        rSMaterialButtonCircle4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        rSMaterialButtonCircle4.setForeground(new java.awt.Color(120, 27, 27));
+        rSMaterialButtonCircle4.setText("SEARCH");
+        rSMaterialButtonCircle4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSMaterialButtonCircle4ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(rSMaterialButtonCircle4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 180, 180, 60));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1490, 280));
 
@@ -238,8 +272,9 @@ public class ViewRecords extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
-    search();
-    clearTable();
+        clearTable();
+        setIssueBookDetails();
+
     }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
 
     private void tbl_issueBookDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_issueBookDetailsMouseClicked
@@ -252,6 +287,16 @@ public class ViewRecords extends javax.swing.JFrame {
         home.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel72MouseClicked
+
+    private void rSMaterialButtonCircle4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle4ActionPerformed
+        if (date_fromDate.getDatoFecha() != null && date_toDate.getDatoFecha() != null) {
+            clearTable();
+            search();
+        } else {
+            JOptionPane.showMessageDialog(this, "Please Select a Date");
+        }
+
+    }//GEN-LAST:event_rSMaterialButtonCircle4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -290,6 +335,7 @@ public class ViewRecords extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle3;
+    private rojerusan.RSMaterialButtonCircle rSMaterialButtonCircle4;
     private rojeru_san.complementos.RSTableMetro tbl_issueBookDetails;
     // End of variables declaration//GEN-END:variables
 }

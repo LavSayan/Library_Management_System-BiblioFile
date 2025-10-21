@@ -15,32 +15,32 @@ import javax.swing.JOptionPane;
  * @author brizu
  */
 public class IssueBook extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(IssueBook.class.getName());
-    
+
     /**
      * Creates new form IssueBook
      */
     public IssueBook() {
         initComponents();
-    
+
     }
-    
+
     //to fetch the book details from the database and display it to book details panel
-    public void getBookDetails(){
+    public void getBookDetails() {
         int bookId = Integer.parseInt(txt_bookId.getText());
-        
+
         try {
             Connection con = DBConnection.getConnection();
             PreparedStatement pst = con.prepareStatement("select * from book_details where book_id = ?");
             pst.setInt(1, bookId);
             ResultSet rs = pst.executeQuery();
-            
+
             if (rs.next()) {
                 lbl_bookId.setText(rs.getString("book_id"));
                 lbl_bookName.setText(rs.getString("book_name"));
                 lbl_author.setText(rs.getString("author"));
-                lbl_quantity.setText(rs.getString("quantity")); 
+                lbl_quantity.setText(rs.getString("quantity"));
                 lbl_bookPrice.setText(rs.getString("book_price"));
                 lbl_bookError.setText("");
             } else {
@@ -52,15 +52,15 @@ public class IssueBook extends javax.swing.JFrame {
     }
 
     //to fetch the user details from the database and display it to user details panel
-    public void getUserDetails(){
+    public void getUserDetails() {
         int userId = Integer.parseInt(txt_userId.getText());
-        
+
         try {
             Connection con = DBConnection.getConnection();
             PreparedStatement pst = con.prepareStatement("select * from user_details where user_id = ?");
             pst.setInt(1, userId);
             ResultSet rs = pst.executeQuery();
-            
+
             if (rs.next()) {
                 lbl_userId.setText(rs.getString("user_id"));
                 lbl_userName.setText(rs.getString("name"));
@@ -69,32 +69,32 @@ public class IssueBook extends javax.swing.JFrame {
             } else {
                 lbl_userError.setText("Invalid User Id");
             }
-                
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     //insert  issue book details to the database 
-    public boolean issueBook(){
+    public boolean issueBook() {
         boolean isIssued = false;
         int bookId = Integer.parseInt(txt_bookId.getText());
         int userId = Integer.parseInt(txt_userId.getText());
         String bookName = lbl_bookName.getText();
         String userName = lbl_userName.getText();
-        
+
         Date uIssueDate = date_issueDate.getDatoFecha();
         Date uDueDate = date_dueDate.getDatoFecha();
-        
+
         long l1 = uIssueDate.getTime();
         long l2 = uDueDate.getTime();
-        
+
         java.sql.Date sIssueDate = new java.sql.Date(l1);
         java.sql.Date sDueDate = new java.sql.Date(l2);
-        
+
         try {
             Connection con = DBConnection.getConnection();
-            String sql  = "insert into issue_book_details(book_id,book_name,user_id,user_name,issue_date,due_date,status) values (?,?,?,?,?,?,? )";
+            String sql = "insert into issue_book_details(book_id,book_name,user_id,user_name,issue_date,due_date,status) values (?,?,?,?,?,?,? )";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, bookId);
             pst.setString(2, bookName);
@@ -103,7 +103,7 @@ public class IssueBook extends javax.swing.JFrame {
             pst.setDate(5, sIssueDate);
             pst.setDate(6, sDueDate);
             pst.setString(7, "pending");
-            
+
             int rowCount = pst.executeUpdate();
             if (rowCount > 0) {
                 isIssued = true;
@@ -114,19 +114,19 @@ public class IssueBook extends javax.swing.JFrame {
             e.printStackTrace();
         }
         return isIssued;
-       
+
     }
-    
+
     //updating book quantity
     public void updateBookQuantity() {
         int bookId = Integer.parseInt(txt_bookId.getText());
-        
+
         try {
             Connection con = DBConnection.getConnection();
             String sql = "update book_details set quantity = quantity - 1 where book_id = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, bookId);
-            
+
             int rowCount = pst.executeUpdate();
             if (rowCount > 0) {
                 JOptionPane.showMessageDialog(this, "Book Quantity Updated");
@@ -139,13 +139,13 @@ public class IssueBook extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     //verifying if the book is already allocated
-    public boolean isAlreadyIssued(){
+    public boolean isAlreadyIssued() {
         boolean isAlreadyIssued = false;
         int bookId = Integer.parseInt(txt_bookId.getText());
         int userId = Integer.parseInt(txt_userId.getText());
-        
+
         try {
             Connection con = DBConnection.getConnection();
             String sql = "select * from issue_book_details where book_id = ? and user_id = ? and status = ?";
@@ -153,7 +153,7 @@ public class IssueBook extends javax.swing.JFrame {
             pst.setInt(1, bookId);
             pst.setInt(2, userId);
             pst.setString(3, "pending");
-            
+
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 isAlreadyIssued = true;
@@ -165,6 +165,7 @@ public class IssueBook extends javax.swing.JFrame {
         }
         return isAlreadyIssued;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1529,7 +1530,7 @@ public class IssueBook extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Serif", 1, 25)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(120, 27, 27));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Books_52px_1.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Books_100px.png"))); // NOI18N
         jLabel1.setText("Issue Book");
         panel_main.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 180, -1));
 
@@ -1676,22 +1677,26 @@ public class IssueBook extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_userIdActionPerformed
 
     private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
-        
-        if (lbl_quantity.getText().equals("0")) {
-            JOptionPane.showMessageDialog(this, "Book is not Available");
-        } else {
-            if (isAlreadyIssued() == false) {
-                if (issueBook() == true) {
-                    JOptionPane.showMessageDialog(this, "Book Issued Successfully");
-                    updateBookQuantity();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Failed to Issue the Book");
-                }
+
+        if (date_issueDate.getDatoFecha() != null && date_dueDate.getDatoFecha() != null) {
+            if (lbl_quantity.getText().equals("0")) {
+                JOptionPane.showMessageDialog(this, "Book is not Available");
             } else {
-                JOptionPane.showMessageDialog(this, "The User has already Issued the Chosen Book");
+                if (isAlreadyIssued() == false) {
+                    if (issueBook() == true) {
+                        JOptionPane.showMessageDialog(this, "Book Issued Successfully");
+                        updateBookQuantity();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to Issue the Book");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "The User has already Issued the Chosen Book");
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please Select a Date");
         }
-        
+
     }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
 
     /**
@@ -1714,7 +1719,7 @@ public class IssueBook extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new IssueBook().setVisible(true));
     }

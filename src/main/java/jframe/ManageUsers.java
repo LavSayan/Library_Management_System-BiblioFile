@@ -322,9 +322,9 @@ public class ManageUsers extends javax.swing.JFrame {
 
         jLabel16.setFont(new java.awt.Font("Serif", 0, 30)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(120, 27, 27));
-        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Collaborator_Male_26px.png"))); // NOI18N
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/userIcon - Copy.png"))); // NOI18N
         jLabel16.setText("    Manage Users");
-        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 110, 310, 110));
+        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 310, 110));
 
         jPanel2.setBackground(new java.awt.Color(120, 27, 27));
 

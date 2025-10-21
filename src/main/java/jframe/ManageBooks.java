@@ -324,8 +324,8 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jLabel36.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel36.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Collaborator_Male_26px.png"))); // NOI18N
-        jPanel1.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 360, 50, 50));
+        jLabel36.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Collaborator_Male_35px.png"))); // NOI18N
+        jPanel1.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 360, 50, 50));
 
         jLabel72.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel72.setForeground(new java.awt.Color(255, 255, 255));
@@ -402,7 +402,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jLabel16.setFont(new java.awt.Font("Serif", 0, 30)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(120, 27, 27));
-        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Books_52px_1.png"))); // NOI18N
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/icons8_Books_100px.png"))); // NOI18N
         jLabel16.setText("    Manage Books");
         jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 160, 280, 60));
 

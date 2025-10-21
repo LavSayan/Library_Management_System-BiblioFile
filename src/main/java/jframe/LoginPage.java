@@ -87,9 +87,9 @@ public class LoginPage extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -135,18 +135,8 @@ public class LoginPage extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/library-3.png.png"))); // NOI18N
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, 780, 590));
-
-        jLabel3.setFont(new java.awt.Font("Serif", 1, 60)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(120, 27, 27));
-        jLabel3.setText("BiblioFile");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 137, 260, 80));
-
-        jLabel7.setFont(new java.awt.Font("Serif", 0, 30)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(120, 27, 27));
-        jLabel7.setText("Welcome To");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 170, -1));
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/signinpage.png"))); // NOI18N
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 990, 670));
 
         jLabel9.setFont(new java.awt.Font("Rockwell Extra Bold", 1, 25)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
@@ -157,6 +147,16 @@ public class LoginPage extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 20, 60, 50));
+
+        jLabel2.setFont(new java.awt.Font("Serif", 1, 60)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(120, 27, 27));
+        jLabel2.setText("BiblioFile");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 140, 260, 80));
+
+        jLabel7.setFont(new java.awt.Font("Serif", 0, 30)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(120, 27, 27));
+        jLabel7.setText("Welcome To");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 170, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 830));
 
@@ -396,7 +396,7 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel37.setText("Login Page");
         jPanel2.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, -1, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, -20, 530, 830));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 0, 530, 830));
 
         setSize(new java.awt.Dimension(1523, 828));
         setLocationRelativeTo(null);
@@ -485,6 +485,7 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -495,7 +496,6 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
