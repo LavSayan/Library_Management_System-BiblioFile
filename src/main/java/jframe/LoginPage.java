@@ -54,7 +54,7 @@ public class LoginPage extends javax.swing.JFrame {
         
         try {
             Connection con = DBConnection.getConnection();
-            PreparedStatement pst = con.prepareStatement("select * from users where name = ? and password = ?");
+            PreparedStatement pst = con.prepareStatement("select * from admin where name = ? and password = ?");
             
             pst.setString(1, name);
             pst.setString(2, pwd);
@@ -184,6 +184,7 @@ public class LoginPage extends javax.swing.JFrame {
 
         txt_username.setBackground(new java.awt.Color(120, 27, 27));
         txt_username.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_username.setForeground(new java.awt.Color(255, 255, 255));
         txt_username.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_username.setPhColor(new java.awt.Color(255, 255, 255));
         txt_username.setPlaceholder("Enter Username....");
@@ -354,6 +355,7 @@ public class LoginPage extends javax.swing.JFrame {
 
         txt_password.setBackground(new java.awt.Color(120, 27, 27));
         txt_password.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_password.setForeground(new java.awt.Color(255, 255, 255));
         txt_password.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_password.setPhColor(new java.awt.Color(255, 255, 255));
         txt_password.setPlaceholder("Enter Password....");

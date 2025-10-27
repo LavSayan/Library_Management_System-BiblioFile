@@ -8,145 +8,184 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.util.logging.Level;
 
 /**
  *
  * @author brizu
  */
 public class ManageBooks extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ManageBooks.class.getName());
 
-    /**
-     * Creates new form ManageBooks
-     */
-    
     String bookName, author;
     int bookId, quantity, bookPrice;
     DefaultTableModel model;
-    
+
     public ManageBooks() {
         initComponents();
+        // initialize model after components are created
+        model = (DefaultTableModel) tbl_bookDetails.getModel();
+        refreshTable();
+    }
+
+    /**
+     * Reloads table data safely.
+     */
+    private void refreshTable() {
+        clearTable();
         setBookDetails();
     }
-    
-    //inputs the book details in the table
-    public void setBookDetails(){
-        
-        try {
-            Connection con = DBConnection.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from book_details");   
-            
+
+    // inputs the book details in the table
+    public void setBookDetails() {
+
+        String sql = "SELECT * FROM book_details";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
             while (rs.next()) {
-                String bookId = rs.getString("book_id");
-                String bookName = rs.getString("book_name");
-                String author = rs.getString("author");
-                int quantity = rs.getInt("quantity");
-                int bookPrice = rs.getInt("book_price");
-                
-                Object[] obj = {bookId, bookName, author, quantity, bookPrice};
-                model =(DefaultTableModel) tbl_bookDetails.getModel();
+                Object[] obj = {
+                    rs.getInt("book_id"),
+                    rs.getString("book_name"),
+                    rs.getString("author"),
+                    rs.getInt("quantity"),
+                    rs.getInt("book_price")
+                };
                 model.addRow(obj);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error loading book details", e);
+            JOptionPane.showMessageDialog(this, "Error loading book details. See logs for details.");
+        }
+    }
+
+    // to add book to book_details table
+    public boolean addBook() {
+        if (!readInputsFromFields()) {
+            return false; // readInputsFromFields shows message on failure
         }
 
-    }
-    
-    //to add book to book_details table
-    public boolean addBook(){
-        boolean isAdded = false;
-        bookId = Integer.parseInt(txt_bookId.getText());
-        bookName = txt_bookName.getText();
-        author = txt_authorName.getText();
-        quantity = Integer.parseInt(txt_quantity.getText());
-        bookPrice = Integer.parseInt(txt_bookPrice.getText());
-        
-        try {
-            Connection con = DBConnection.getConnection();
-            String sql = "insert into book_details value (?,?,?,?,?)";
-            PreparedStatement pst = con.prepareStatement(sql);
+        String sql = "INSERT INTO book_details (book_id, book_name, author, quantity, book_price) VALUES (?, ?, ?, ?, ?)";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setInt(1, bookId);
             pst.setString(2, bookName);
             pst.setString(3, author);
             pst.setInt(4, quantity);
             pst.setInt(5, bookPrice);
-            
-            int rowCount = pst.executeUpdate();
-            if (rowCount > 0) {
-                isAdded = true;
-            } else {
-                isAdded = false;
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
+
+            return pst.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error adding book", e);
+            JOptionPane.showMessageDialog(this, "Failed to add book. See logs for details.");
+            return false;
         }
-        return isAdded;
     }
-    
-    //to update book details
-    public boolean updateBook(){
-        boolean isUpdated = false;
-        bookId = Integer.parseInt(txt_bookId.getText());
-        bookName = txt_bookName.getText();
-        author = txt_authorName.getText();
-        quantity = Integer.parseInt(txt_quantity.getText());
-        bookPrice = Integer.parseInt(txt_bookPrice.getText());
-        
-        try {
-            Connection con = DBConnection.getConnection();
-            String sql = "update book_details set book_name = ?,author = ?,quantity = ?,book_price = ? where book_id = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
+
+    // to update book details
+    public boolean updateBook() {
+        if (!readInputsFromFields()) {
+            return false;
+        }
+
+        String sql = "UPDATE book_details SET book_name = ?, author = ?, quantity = ?, book_price = ? WHERE book_id = ?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
             pst.setString(1, bookName);
             pst.setString(2, author);
             pst.setInt(3, quantity);
             pst.setInt(4, bookPrice);
             pst.setInt(5, bookId);
-            
-            int rowCount = pst.executeUpdate();
-            if (rowCount > 0) {
-                isUpdated = true;
-            } else {
-                isUpdated = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            return pst.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error updating book", e);
+            JOptionPane.showMessageDialog(this, "Failed to update book. See logs for details.");
+            return false;
         }
-        return isUpdated;
     }
-    
-    //to delete book 
-    public boolean deleteBook(){
-        boolean isDeleted = false;
-        bookId = Integer.parseInt(txt_bookId.getText());
-        
+
+    // to delete book 
+    public boolean deleteBook() {
+        String idText = txt_bookId.getText().trim();
+        if (idText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter Book ID to delete.");
+            return false;
+        }
+
+        int id;
         try {
-            Connection con = DBConnection.getConnection();
-            String sql = "delete from book_details where book_id = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setInt(1, bookId);
-            
-            int rowCount = pst.executeUpdate();
-            if (rowCount > 0) {
-                isDeleted = true;
-            } else {
-                isDeleted = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            id = Integer.parseInt(idText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Book ID must be a number.");
+            return false;
         }
-        return isDeleted;
+
+        String sql = "DELETE FROM book_details WHERE book_id = ?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+            return pst.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error deleting book", e);
+            JOptionPane.showMessageDialog(this, "Failed to delete book. See logs for details.");
+            return false;
+        }
     }
-    
-    //to clear table 
-    public void clearTable(){
-        DefaultTableModel model = (DefaultTableModel) tbl_bookDetails.getModel();
+
+    // to clear table 
+    public void clearTable() {
         model.setRowCount(0);
+    }
+
+    /**
+     * Read & validate inputs from text fields. Returns true if valid and sets
+     * instance fields (bookId, bookName, author, quantity, bookPrice). Shows
+     * user messages on invalid inputs.
+     */
+    private boolean readInputsFromFields() {
+        String idText = txt_bookId.getText().trim();
+        String nameText = txt_bookName.getText().trim();
+        String authorText = txt_authorName.getText().trim();
+        String qtyText = txt_quantity.getText().trim();
+        String priceText = txt_bookPrice.getText().trim();
+
+        if (idText.isEmpty() || nameText.isEmpty() || authorText.isEmpty() || qtyText.isEmpty() || priceText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return false;
+        }
+
+        try {
+            bookId = Integer.parseInt(idText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Book ID must be an integer.");
+            return false;
+        }
+
+        try {
+            quantity = Integer.parseInt(qtyText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Quantity must be an integer.");
+            return false;
+        }
+
+        try {
+            bookPrice = Integer.parseInt(priceText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Price must be an integer.");
+            return false;
+        }
+
+        bookName = nameText;
+        author = authorText;
+        return true;
     }
 
     /**
@@ -193,6 +232,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         txt_bookId.setBackground(new java.awt.Color(120, 27, 27));
         txt_bookId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_bookId.setForeground(new java.awt.Color(255, 255, 255));
         txt_bookId.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_bookId.setPhColor(new java.awt.Color(255, 255, 255));
         txt_bookId.setPlaceholder("Enter Book Id....");
@@ -220,6 +260,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         txt_bookName.setBackground(new java.awt.Color(120, 27, 27));
         txt_bookName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_bookName.setForeground(new java.awt.Color(255, 255, 255));
         txt_bookName.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_bookName.setPhColor(new java.awt.Color(255, 255, 255));
         txt_bookName.setPlaceholder("Enter Book Name....");
@@ -242,6 +283,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         txt_authorName.setBackground(new java.awt.Color(120, 27, 27));
         txt_authorName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_authorName.setForeground(new java.awt.Color(255, 255, 255));
         txt_authorName.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_authorName.setPhColor(new java.awt.Color(255, 255, 255));
         txt_authorName.setPlaceholder("Enter Author Name....");
@@ -264,6 +306,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         txt_quantity.setBackground(new java.awt.Color(120, 27, 27));
         txt_quantity.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_quantity.setForeground(new java.awt.Color(255, 255, 255));
         txt_quantity.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_quantity.setPhColor(new java.awt.Color(255, 255, 255));
         txt_quantity.setPlaceholder("Enter Quantity....");
@@ -354,6 +397,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         txt_bookPrice.setBackground(new java.awt.Color(120, 27, 27));
         txt_bookPrice.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_bookPrice.setForeground(new java.awt.Color(255, 255, 255));
         txt_bookPrice.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_bookPrice.setPhColor(new java.awt.Color(255, 255, 255));
         txt_bookPrice.setPlaceholder("Enter Price....");
@@ -460,48 +504,42 @@ public class ManageBooks extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_quantityActionPerformed
 
     private void rSMaterialButtonCircle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle2ActionPerformed
-        if (deleteBook() == true) {
+        if (deleteBook()) {
             JOptionPane.showMessageDialog(this, "Book Deleted");
-            clearTable();
-            setBookDetails();
+            refreshTable();
         } else {
             JOptionPane.showMessageDialog(this, "Failed to Delete the Book");
         }
     }//GEN-LAST:event_rSMaterialButtonCircle2ActionPerformed
 
     private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
-        if (addBook() == true) {
+        if (addBook()) {
             JOptionPane.showMessageDialog(this, "Book Added");
-            clearTable();
-            setBookDetails();
+            refreshTable();
         } else {
             JOptionPane.showMessageDialog(this, "Failed to Add the Book");
         }
     }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
 
     private void rSMaterialButtonCircle4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle4ActionPerformed
-        // TODO add your handling code here:
-        if (updateBook() == true) {
+        if (updateBook()) {
             JOptionPane.showMessageDialog(this, "Book Updated");
-            clearTable();
-            setBookDetails();
+            refreshTable();
         } else {
             JOptionPane.showMessageDialog(this, "Failed to Update the Book");
         }
     }//GEN-LAST:event_rSMaterialButtonCircle4ActionPerformed
 
     private void jLabel72MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel72MouseClicked
-        // TODO add your handling code here:
         HomePage home = new HomePage();
         home.setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabel72MouseClicked
 
     private void tbl_bookDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_bookDetailsMouseClicked
-        // TODO add your handling code here:
         int rowNo = tbl_bookDetails.getSelectedRow();
         TableModel model = tbl_bookDetails.getModel();
-        
+
         txt_bookId.setText(model.getValueAt(rowNo, 0).toString());
         txt_bookName.setText(model.getValueAt(rowNo, 1).toString());
         txt_authorName.setText(model.getValueAt(rowNo, 2).toString());

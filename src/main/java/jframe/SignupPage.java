@@ -35,7 +35,7 @@ public class SignupPage extends javax.swing.JFrame {
         
         try {
             Connection con = DBConnection.getConnection();
-            String sql = "insert into users(name, password, email) values(?,?,?)";
+            String sql = "insert into admin(name, password, email) values(?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
             
             pst.setString(1, name);
@@ -93,7 +93,7 @@ public class SignupPage extends javax.swing.JFrame {
         try {
             Connection con = DBConnection.getConnection();
             
-            PreparedStatement pst = con.prepareStatement("Select * from users where name = ?");
+            PreparedStatement pst = con.prepareStatement("Select * from admin where name = ?");
             pst.setString(1, name);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
@@ -204,10 +204,11 @@ public class SignupPage extends javax.swing.JFrame {
                 jLabel8MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 70, 70));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 0, 70, 70));
 
         txt_username.setBackground(new java.awt.Color(120, 27, 27));
         txt_username.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_username.setForeground(new java.awt.Color(255, 255, 255));
         txt_username.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_username.setPhColor(new java.awt.Color(255, 255, 255));
         txt_username.setPlaceholder("Enter Username....");
@@ -383,6 +384,7 @@ public class SignupPage extends javax.swing.JFrame {
 
         txt_password.setBackground(new java.awt.Color(120, 27, 27));
         txt_password.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_password.setForeground(new java.awt.Color(255, 255, 255));
         txt_password.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_password.setPhColor(new java.awt.Color(255, 255, 255));
         txt_password.setPlaceholder("Enter Password....");
@@ -410,6 +412,7 @@ public class SignupPage extends javax.swing.JFrame {
 
         txt_email.setBackground(new java.awt.Color(120, 27, 27));
         txt_email.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(255, 255, 255)));
+        txt_email.setForeground(new java.awt.Color(255, 255, 255));
         txt_email.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         txt_email.setPhColor(new java.awt.Color(255, 255, 255));
         txt_email.setPlaceholder("Enter Email....");

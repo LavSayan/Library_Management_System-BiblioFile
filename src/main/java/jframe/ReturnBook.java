@@ -814,7 +814,7 @@ public class ReturnBook extends javax.swing.JFrame {
         lbl_bookError.setForeground(new java.awt.Color(255, 255, 51));
         jPanel2.add(lbl_bookError, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 660, 320, 40));
 
-        panel_main.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 0, 430, 820));
+        panel_main.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 0, 430, 820));
 
         jLabel1.setFont(new java.awt.Font("Serif", 1, 25)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(120, 27, 27));
