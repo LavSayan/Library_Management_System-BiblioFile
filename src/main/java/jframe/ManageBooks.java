@@ -59,7 +59,7 @@ public class ManageBooks extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error loading book details", e);
-            JOptionPane.showMessageDialog(this, "Error loading book details. See logs for details.");
+            JOptionPane.showMessageDialog(this, "Error loading book details");
         }
     }
 
@@ -465,7 +465,7 @@ public class ManageBooks extends javax.swing.JFrame {
 
         jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 235, 420, 5));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, -10, 1160, 850));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 1160, 830));
 
         setSize(new java.awt.Dimension(1724, 824));
         setLocationRelativeTo(null);

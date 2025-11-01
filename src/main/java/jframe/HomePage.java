@@ -607,7 +607,7 @@ public class HomePage extends javax.swing.JFrame {
         });
         jPanel23.add(jLabel61, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 200, 60));
 
-        jPanel4.add(jPanel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 730, -1, 60));
+        jPanel4.add(jPanel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 720, -1, 60));
 
         jPanel32.setBackground(new java.awt.Color(51, 51, 51));
         jPanel32.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

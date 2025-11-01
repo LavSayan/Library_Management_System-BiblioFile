@@ -30,12 +30,17 @@ public class ManageMembership extends javax.swing.JFrame {
     }
 
     private void loadMembershipDetails() {
-        try (Connection con = DBConnection.getConnection(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery("SELECT * FROM membership_details WHERE membership_type = 'Scribe'")) {
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(
+                "SELECT m.record_id, m.user_id, u.name AS user_name, m.start_date, m.end_date, m.status "
+                + "FROM membership_details m "
+                + "JOIN user_details u ON m.user_id = u.user_id "
+                + "WHERE m.membership_type = 'Scribe'")) {
 
             DefaultTableModel model = (DefaultTableModel) tbl_membershipDetails.getModel();
             model.setRowCount(0);
 
             Date today = new Date();
+            ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
                 int recordId = rs.getInt("record_id");
@@ -45,16 +50,16 @@ public class ManageMembership extends javax.swing.JFrame {
                 Date endDate = rs.getDate("end_date");
                 String status = rs.getString("status");
 
-                // If expired and still marked active
+                // Expiration logic
                 if (endDate.before(today) && !status.equalsIgnoreCase("expired")) {
-                    String updateMembership = "UPDATE membership_details SET status = 'expired' WHERE record_id = ?";
-                    try (PreparedStatement pst1 = con.prepareStatement(updateMembership)) {
+                    try (PreparedStatement pst1 = con.prepareStatement(
+                            "UPDATE membership_details SET status = 'expired' WHERE record_id = ?")) {
                         pst1.setInt(1, recordId);
                         pst1.executeUpdate();
                     }
 
-                    String updateUser = "UPDATE user_details SET membership_type = 'Normal' WHERE user_id = ?";
-                    try (PreparedStatement pst2 = con.prepareStatement(updateUser)) {
+                    try (PreparedStatement pst2 = con.prepareStatement(
+                            "UPDATE user_details SET membership_type = 'Normal' WHERE user_id = ?")) {
                         pst2.setInt(1, userId);
                         pst2.executeUpdate();
                     }
@@ -62,23 +67,16 @@ public class ManageMembership extends javax.swing.JFrame {
                     status = "expired";
                 }
 
-                // If status is cancelled, also revert membership type
+                // Cancellation logic
                 if (status.equalsIgnoreCase("cancelled")) {
-                    String updateUser = "UPDATE user_details SET membership_type = 'Normal' WHERE user_id = ?";
-                    try (PreparedStatement pst3 = con.prepareStatement(updateUser)) {
+                    try (PreparedStatement pst3 = con.prepareStatement(
+                            "UPDATE user_details SET membership_type = 'Normal' WHERE user_id = ?")) {
                         pst3.setInt(1, userId);
                         pst3.executeUpdate();
                     }
                 }
 
-                Object[] row = {
-                    recordId,
-                    userId,
-                    userName,
-                    startDate,
-                    endDate,
-                    status
-                };
+                Object[] row = {recordId, userId, userName, startDate, endDate, status};
                 model.addRow(row);
             }
 

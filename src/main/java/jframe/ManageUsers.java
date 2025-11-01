@@ -356,7 +356,7 @@ public class ManageUsers extends javax.swing.JFrame {
 
         combo_membershipType.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         combo_membershipType.setForeground(new java.awt.Color(120, 27, 27));
-        combo_membershipType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Scribe" }));
+        combo_membershipType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Scribe", "Normal" }));
         jPanel1.add(combo_membershipType, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 510, 360, 40));
 
         jLabel14.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
@@ -442,7 +442,7 @@ public class ManageUsers extends javax.swing.JFrame {
 
         jPanel3.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 235, 420, 5));
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, -10, 1160, 850));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 0, 1160, 830));
 
         setSize(new java.awt.Dimension(1724, 824));
         setLocationRelativeTo(null);
