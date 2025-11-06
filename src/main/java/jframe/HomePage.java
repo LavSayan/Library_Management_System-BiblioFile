@@ -42,26 +42,30 @@ public class HomePage extends javax.swing.JFrame {
 
     //inputs the user details in the table
     public void setUserDetails() {
-
         try {
             Connection con = DBConnection.getConnection();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from user_details");
+            ResultSet rs = st.executeQuery("SELECT * FROM user_details");
+
+            model = (DefaultTableModel) tbl_usersDetails.getModel();
+            model.setRowCount(0); // Clear existing rows
 
             while (rs.next()) {
                 String userId = rs.getString("user_id");
-                String userName = rs.getString("name");
-                String userEmail = rs.getString("email");
+                String originalName = rs.getString("name");
+                String originalEmail = rs.getString("email");
                 String membershipType = rs.getString("membership_type");
 
-                Object[] obj = {userId, userName, userEmail, membershipType};
-                model = (DefaultTableModel) tbl_usersDetails.getModel();
+                // Apply partial masking
+                String maskedName = originalName.length() >= 2 ? originalName.substring(0, 2) + "****" : "****";
+                String maskedEmail = originalEmail.length() >= 3 ? originalEmail.substring(0, 3) + "****" : "****";
+
+                Object[] obj = {userId, maskedName, maskedEmail, membershipType};
                 model.addRow(obj);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     //inputs the book details in the table

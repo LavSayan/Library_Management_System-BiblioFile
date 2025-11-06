@@ -50,6 +50,12 @@ public class ManageMembership extends javax.swing.JFrame {
                 Date endDate = rs.getDate("end_date");
                 String status = rs.getString("status");
 
+                // Apply partial masking to user name
+                int visibleChars = 2;
+                String maskedName = userName.length() > visibleChars
+                        ? userName.substring(0, visibleChars) + "****"
+                        : "****";
+
                 // Expiration logic
                 if (endDate.before(today) && !status.equalsIgnoreCase("expired")) {
                     try (PreparedStatement pst1 = con.prepareStatement(
@@ -76,7 +82,7 @@ public class ManageMembership extends javax.swing.JFrame {
                     }
                 }
 
-                Object[] row = {recordId, userId, userName, startDate, endDate, status};
+                Object[] row = {recordId, userId, maskedName, startDate, endDate, status};
                 model.addRow(row);
             }
 
@@ -204,7 +210,15 @@ public class ManageMembership extends javax.swing.JFrame {
             new String [] {
                 "Record Id", "User Id", "User Name", "Start Date", "End Date", "Status"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbl_membershipDetails.setColorBackgoundHead(new java.awt.Color(120, 27, 27));
         tbl_membershipDetails.setColorFilasForeground1(new java.awt.Color(0, 0, 0));
         tbl_membershipDetails.setColorFilasForeground2(new java.awt.Color(0, 0, 0));
@@ -220,6 +234,10 @@ public class ManageMembership extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbl_membershipDetails);
+        if (tbl_membershipDetails.getColumnModel().getColumnCount() > 0) {
+            tbl_membershipDetails.getColumnModel().getColumn(0).setResizable(false);
+            tbl_membershipDetails.getColumnModel().getColumn(0).setHeaderValue("Record Id");
+        }
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
 
@@ -286,9 +304,5 @@ public class ManageMembership extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private rojeru_san.complementos.RSTableMetro tbl_membershipDetails;
     // End of variables declaration//GEN-END:variables
-    private app.bolivia.swing.JCTextField txt_bookName;
-    private app.bolivia.swing.JCTextField txt_price;
-    private app.bolivia.swing.JCTextField txt_orderQuantity;
-    private rojeru_san.complementos.RSTableMetro tableBook;
-    private javax.swing.JTable tableCart;
+
 }

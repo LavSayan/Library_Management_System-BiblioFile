@@ -58,7 +58,15 @@ public class IssueBook extends javax.swing.JFrame {
                 try (ResultSet rs = pst.executeQuery()) {
                     if (rs.next()) {
                         lbl_userId.setText(rs.getString("user_id"));
-                        lbl_userName.setText(rs.getString("name"));
+
+                        // Apply partial masking to name
+                        String name = rs.getString("name");
+                        int visibleChars = 2;
+                        String maskedName = name.length() > visibleChars
+                                ? name.substring(0, visibleChars) + "****"
+                                : "****";
+
+                        lbl_userName.setText(maskedName);
                         lbl_userError.setText("");
                     } else {
                         lbl_userId.setText("");

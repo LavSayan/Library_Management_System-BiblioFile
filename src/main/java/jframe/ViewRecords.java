@@ -19,8 +19,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class ViewRecords extends javax.swing.JFrame {
 
-    private static final java.util.logging.Logger logger =
-            java.util.logging.Logger.getLogger(ViewRecords.class.getName());
+    private static final java.util.logging.Logger logger
+            = java.util.logging.Logger.getLogger(ViewRecords.class.getName());
 
     DefaultTableModel model;
 
@@ -37,26 +37,30 @@ public class ViewRecords extends javax.swing.JFrame {
         clearTable();
         String sql = "SELECT * FROM issue_book_details ORDER BY issue_date";
 
-        try (Connection con = DBConnection.getConnection();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection con = DBConnection.getConnection(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
+
+                // Mask user name
                 String userName = rs.getString("user_name");
+                int visibleChars = 2;
+                String maskedUserName = userName.length() > visibleChars
+                        ? userName.substring(0, visibleChars) + "****"
+                        : "****";
 
                 Timestamp issueTs = rs.getTimestamp("issue_date");
-                Timestamp dueTs   = rs.getTimestamp("due_date");
+                Timestamp dueTs = rs.getTimestamp("due_date");
 
                 String issueDate = (issueTs != null) ? fmt.format(issueTs) : "";
-                String dueDate   = (dueTs != null)   ? fmt.format(dueTs)   : "";
+                String dueDate = (dueTs != null) ? fmt.format(dueTs) : "";
 
                 String status = rs.getString("status");
 
-                Object[] obj = {id, bookName, userName, issueDate, dueDate, status};
+                Object[] obj = {id, bookName, maskedUserName, issueDate, dueDate, status};
                 model.addRow(obj);
             }
 
@@ -75,7 +79,7 @@ public class ViewRecords extends javax.swing.JFrame {
 
     public void search() {
         Date uFromDate = date_fromDate.getDate();
-        Date uToDate   = date_toDate.getDate();
+        Date uToDate = date_toDate.getDate();
 
         if (uFromDate == null || uToDate == null) {
             JOptionPane.showMessageDialog(this, "Please select both From and To dates");
@@ -89,7 +93,7 @@ public class ViewRecords extends javax.swing.JFrame {
 
         ZoneId zone = ZoneId.systemDefault();
         LocalDate fromLocal = Instant.ofEpochMilli(uFromDate.getTime()).atZone(zone).toLocalDate();
-        LocalDate toLocal   = Instant.ofEpochMilli(uToDate.getTime()).atZone(zone).toLocalDate();
+        LocalDate toLocal = Instant.ofEpochMilli(uToDate.getTime()).atZone(zone).toLocalDate();
 
         Instant startInstant = fromLocal.atStartOfDay(zone).toInstant();
         Instant endExclusiveInstant = toLocal.plusDays(1).atStartOfDay(zone).toInstant();
@@ -98,14 +102,13 @@ public class ViewRecords extends javax.swing.JFrame {
         Timestamp endExclusiveTs = Timestamp.from(endExclusiveInstant);
 
         String sql = "SELECT * FROM issue_book_details "
-                   + "WHERE issue_date >= ? AND issue_date < ? "
-                   + "  AND due_date   >= ? AND due_date   < ? "
-                   + "ORDER BY issue_date";
+                + "WHERE issue_date >= ? AND issue_date < ? "
+                + "  AND due_date   >= ? AND due_date   < ? "
+                + "ORDER BY issue_date";
 
         clearTable();
 
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement pst = con.prepareStatement(sql)) {
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setTimestamp(1, startTs);
             pst.setTimestamp(2, endExclusiveTs);
@@ -121,17 +124,23 @@ public class ViewRecords extends javax.swing.JFrame {
                     found = true;
                     String id = rs.getString("id");
                     String bookName = rs.getString("book_name");
+
+                    // Mask user name
                     String userName = rs.getString("user_name");
+                    int visibleChars = 2;
+                    String maskedUserName = userName.length() > visibleChars
+                            ? userName.substring(0, visibleChars) + "****"
+                            : "****";
 
                     Timestamp issueTs = rs.getTimestamp("issue_date");
                     Timestamp dueTs = rs.getTimestamp("due_date");
 
                     String issueDate = (issueTs != null) ? fmt.format(issueTs) : "";
-                    String dueDate   = (dueTs != null)   ? fmt.format(dueTs)   : "";
+                    String dueDate = (dueTs != null) ? fmt.format(dueTs) : "";
 
                     String status = rs.getString("status");
 
-                    Object[] obj = {id, bookName, userName, issueDate, dueDate, status};
+                    Object[] obj = {id, bookName, maskedUserName, issueDate, dueDate, status};
                     model.addRow(obj);
                 }
 

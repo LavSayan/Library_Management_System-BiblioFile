@@ -65,11 +65,19 @@ public class ManageOrder extends javax.swing.JFrame {
 
             DefaultTableModel model = (DefaultTableModel) tableUser.getModel();
             model.setRowCount(0);
+
             while (rs.next()) {
                 String userId = rs.getString("user_id");
                 String userName = rs.getString("name");
                 String membershipType = rs.getString("membership_type");
-                Object[] obj = {userId, userName, membershipType};
+
+                // Apply partial masking to name
+                int visibleChars = 2;
+                String maskedName = userName.length() > visibleChars
+                        ? userName.substring(0, visibleChars) + "****"
+                        : "****";
+
+                Object[] obj = {userId, maskedName, membershipType};
                 model.addRow(obj);
             }
         } catch (Exception e) {
@@ -256,9 +264,12 @@ public class ManageOrder extends javax.swing.JFrame {
                 b.setText(b.getText() + "Discount       : 0\n");
             }
 
-            b.setText(b.getText() + "Final Total    : " + discountedTotal + "\n");
-            b.setText(b.getText() + "Cash           : " + lbl_cash.getText() + "\n");
-            b.setText(b.getText() + "Balance        : " + lbl_balance.getText() + "\n");
+            b.setText(b.getText() + "Total Amount Due      :      " + discountedTotal + "\n");
+            b.setText(b.getText() + "Cash Recieved      :      " + lbl_cash.getText() + "\n");
+            b.setText(b.getText() + "Outstanding Balance      :      " + lbl_balance.getText() + "\n");
+            b.setText(b.getText() + "--------------------------------------------------------------------------------------------------\n");
+            b.setText(b.getText() + "Note: We have a strict no return book policy.\n");
+            b.setText(b.getText() + "Please review your order carefully before checkout. All sales are considered final.\n");
             b.setText(b.getText() + "--------------------------------------------------------------------------------------------------\n");
             b.setText(b.getText() + "                              Thanks For Your Business...!\n");
             b.setText(b.getText() + "--------------------------------------------------------------------------------------------------\n");
@@ -791,13 +802,18 @@ public class ManageOrder extends javax.swing.JFrame {
             // Pricing Summary
             int discountAmount = originalTotal - finalTotalPrice;
 
-            doc.add(new Paragraph("Original Total : " + originalTotal));
-            doc.add(new Paragraph("Discount       : " + discountAmount));
-            doc.add(new Paragraph("Final Total    : " + finalTotalPrice));
-            doc.add(new Paragraph("Cash Paid      : " + lbl_cash.getText()));
-            doc.add(new Paragraph("Balance        : " + lbl_balance.getText()));
+            doc.add(new Paragraph(" "));
+            doc.add(new Paragraph("Original Total      : " + originalTotal));
+            doc.add(new Paragraph("Discount            : " + (originalTotal - finalTotalPrice)));
+            doc.add(new Paragraph("Total Amount Due    : " + finalTotalPrice));
+            doc.add(new Paragraph("Cash Received       : " + lbl_cash.getText()));
+            doc.add(new Paragraph("Outstanding Balance : " + lbl_balance.getText()));
             doc.add(new Paragraph("------------------------------------------------------------"));
-            doc.add(new Paragraph("Thank you for your business!"));
+            doc.add(new Paragraph("Note: We have a strict no return book policy."));
+            doc.add(new Paragraph("Please review your order carefully before checkout. All sales are considered final."));
+            doc.add(new Paragraph("------------------------------------------------------------"));
+            doc.add(new Paragraph("Thanks For Your Business!"));
+            doc.add(new Paragraph("------------------------------------------------------------"));
 
             doc.close();
 

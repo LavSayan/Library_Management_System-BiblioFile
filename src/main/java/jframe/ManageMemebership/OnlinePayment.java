@@ -59,8 +59,23 @@ public class OnlinePayment extends javax.swing.JFrame {
 
             if (rs.next()) {
                 lbl_userId.setText(userIdStr);
-                lbl_userName.setText(rs.getString("name"));
-                lbl_userEmail.setText(rs.getString("email"));
+
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+
+                // Adjustable partial masking
+                int visibleChars = 2;
+
+                String maskedName = name.length() > visibleChars
+                        ? name.substring(0, visibleChars) + "****"
+                        : "****";
+
+                String maskedEmail = email.length() > visibleChars
+                        ? email.substring(0, visibleChars) + "****"
+                        : "****";
+
+                lbl_userName.setText(maskedName);
+                lbl_userEmail.setText(maskedEmail);
                 lbl_membershipType.setText(rs.getString("membership_type"));
                 lbl_userError.setText("");
                 customerPk = Integer.parseInt(userIdStr);
@@ -923,8 +938,8 @@ public class OnlinePayment extends javax.swing.JFrame {
 
         jLabel28.setFont(new java.awt.Font("Serif", 1, 17)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(120, 27, 27));
-        jLabel28.setText("Fee :");
-        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 120, 60));
+        jLabel28.setText("Fee (includes VAT):");
+        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 150, 60));
 
         jLabel99.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         jLabel99.setForeground(new java.awt.Color(120, 27, 27));
@@ -954,9 +969,9 @@ public class OnlinePayment extends javax.swing.JFrame {
 
         lbl_fee.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         lbl_fee.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_fee.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_fee.setText("200");
-        txt_userName1.add(lbl_fee, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, 30));
+        lbl_fee.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lbl_fee.setText("224");
+        txt_userName1.add(lbl_fee, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 110, 30));
 
         jPanel2.add(txt_userName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 250, 150, -1));
 

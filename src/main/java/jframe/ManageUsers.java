@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -34,19 +36,30 @@ public class ManageUsers extends javax.swing.JFrame {
     }
 
     //inputs the user details in the table
+    // Create a list to store actual user objects
+    List<User> actualUsers = new ArrayList<>();
+
     public void setUserDetails() {
         try (Connection con = DBConnection.getConnection(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery("SELECT * FROM user_details")) {
 
             model = (DefaultTableModel) tbl_usersDetails.getModel();
             model.setRowCount(0);
+            actualUsers.clear();
 
             while (rs.next()) {
                 String userId = rs.getString("user_id");
-                String userName = rs.getString("name");
-                String userEmail = rs.getString("email");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
                 String membershipType = rs.getString("membership_type");
 
-                Object[] obj = {userId, userName, userEmail, membershipType};
+                // Store actual values
+                actualUsers.add(new User(userId, name, email, membershipType));
+
+                // Masked display
+                String maskedName = name.length() >= 2 ? name.substring(0, 2) + "****" : "****";
+                String maskedEmail = email.length() >= 3 ? email.substring(0, 3) + "****" : "****";
+
+                Object[] obj = {userId, maskedName, maskedEmail, membershipType};
                 model.addRow(obj);
             }
 
@@ -425,7 +438,7 @@ public class ManageUsers extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(120, 27, 27));
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/userIcon - Copy.png"))); // NOI18N
         jLabel16.setText("    Manage Users");
-        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 310, 110));
+        jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, 330, 110));
 
         jPanel2.setBackground(new java.awt.Color(120, 27, 27));
 
@@ -506,21 +519,6 @@ public class ManageUsers extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jLabel72MouseClicked
 
-    private void tbl_usersDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_usersDetailsMouseClicked
-        int rowNo = tbl_usersDetails.getSelectedRow();
-        TableModel model = tbl_usersDetails.getModel();
-
-        txt_userId.setText(model.getValueAt(rowNo, 0).toString());
-        txt_userName.setText(model.getValueAt(rowNo, 1).toString());
-        txt_userEmail.setText(model.getValueAt(rowNo, 2).toString());
-        combo_membershipType.setSelectedItem(model.getValueAt(rowNo, 3).toString());
-
-    }//GEN-LAST:event_tbl_usersDetailsMouseClicked
-
-    private void tbl_usersDetailsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_usersDetailsMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tbl_usersDetailsMouseEntered
-
     private void txt_userEmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_userEmailFocusLost
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_userEmailFocusLost
@@ -528,6 +526,22 @@ public class ManageUsers extends javax.swing.JFrame {
     private void txt_userEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_userEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_userEmailActionPerformed
+
+    private void tbl_usersDetailsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_usersDetailsMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_usersDetailsMouseEntered
+
+    private void tbl_usersDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_usersDetailsMouseClicked
+        int rowNo = tbl_usersDetails.getSelectedRow();
+        if (rowNo >= 0 && rowNo < actualUsers.size()) {
+            User selectedUser = actualUsers.get(rowNo);
+
+            txt_userId.setText(selectedUser.userId);
+            txt_userName.setText(selectedUser.name); // actual name
+            txt_userEmail.setText(selectedUser.email); // actual email
+            combo_membershipType.setSelectedItem(selectedUser.membershipType);
+        }
+    }//GEN-LAST:event_tbl_usersDetailsMouseClicked
 
     /**
      * @param args the command line arguments

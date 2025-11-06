@@ -63,9 +63,22 @@ public class OnsitePayment extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
+                int visibleChars = 2; // Adjust this value to control how many characters are shown
+
+                String originalName = rs.getString("name");
+                String originalEmail = rs.getString("email");
+
+                String maskedName = originalName.length() > visibleChars
+                        ? originalName.substring(0, visibleChars) + "****"
+                        : "****";
+
+                String maskedEmail = originalEmail.length() > visibleChars
+                        ? originalEmail.substring(0, visibleChars) + "****"
+                        : "****";
+
                 lbl_userId.setText(userIdStr);
-                lbl_userName.setText(rs.getString("name"));
-                lbl_userEmail.setText(rs.getString("email"));
+                lbl_userName.setText(maskedName);
+                lbl_userEmail.setText(maskedEmail);
                 lbl_membershipType.setText(rs.getString("membership_type"));
                 lbl_userError.setText(""); // clear error
                 customerPk = Integer.parseInt(userIdStr); // store for renewal
@@ -972,6 +985,7 @@ public class OnsitePayment extends javax.swing.JFrame {
         lbl_cash.setBackground(new java.awt.Color(120, 27, 27));
         lbl_cash.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         lbl_cash.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_cash.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         lbl_cash.setFont(new java.awt.Font("Serif", 0, 17)); // NOI18N
         lbl_cash.setPhColor(new java.awt.Color(255, 255, 255));
         lbl_cash.setPlaceholder("Enter Cash....");
@@ -990,17 +1004,17 @@ public class OnsitePayment extends javax.swing.JFrame {
         jLabel25.setFont(new java.awt.Font("Serif", 1, 17)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(120, 27, 27));
         jLabel25.setText("Balance :");
-        jPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 290, 120, 60));
+        jPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 120, 60));
 
         jLabel28.setFont(new java.awt.Font("Serif", 1, 17)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(120, 27, 27));
-        jLabel28.setText("Fee :");
-        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 120, 60));
+        jLabel28.setText("Fee (includes VAT):");
+        jPanel2.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 180, 60));
 
         jLabel29.setFont(new java.awt.Font("Serif", 1, 17)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(120, 27, 27));
         jLabel29.setText("Cash :");
-        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 120, 60));
+        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 120, 60));
 
         btnPay.setBackground(new java.awt.Color(120, 27, 27));
         btnPay.setBorder(new javax.swing.border.MatteBorder(null));
@@ -1018,7 +1032,7 @@ public class OnsitePayment extends javax.swing.JFrame {
 
         lbl_balance.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         lbl_balance.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_balance.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_balance.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         txt_userName1.add(lbl_balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 30));
 
         jPanel2.add(txt_userName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 310, 150, -1));
@@ -1029,8 +1043,8 @@ public class OnsitePayment extends javax.swing.JFrame {
 
         lbl_fee.setFont(new java.awt.Font("Serif", 0, 18)); // NOI18N
         lbl_fee.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_fee.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_fee.setText("200");
+        lbl_fee.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lbl_fee.setText("224");
         txt_userName2.add(lbl_fee, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 30));
 
         jPanel2.add(txt_userName2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 190, 150, -1));

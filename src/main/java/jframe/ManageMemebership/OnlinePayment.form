@@ -1856,11 +1856,11 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="1b" green="1b" red="78" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Fee :"/>
+            <Property name="text" type="java.lang.String" value="Fee (includes VAT):"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="100" y="230" width="120" height="60"/>
+              <AbsoluteConstraints x="30" y="230" width="150" height="60"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -1939,12 +1939,12 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="200"/>
+                <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="text" type="java.lang.String" value="224"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="0" y="0" width="110" height="30"/>
+                  <AbsoluteConstraints x="40" y="0" width="110" height="30"/>
                 </Constraint>
               </Constraints>
             </Component>

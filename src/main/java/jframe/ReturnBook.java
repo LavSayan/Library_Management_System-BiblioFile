@@ -15,59 +15,64 @@ import javax.swing.JOptionPane;
  * @author brizu
  */
 public class ReturnBook extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ReturnBook.class.getName());
-    
+
     /**
      * Creates new form IssueBook
      */
     public ReturnBook() {
         initComponents();
-    
+
     }
-    
+
     //to fetch the issued book details from the database and display it 
-    
     public void getIssueBookDetails() {
-        int bookId = Integer.parseInt(txt_bookId.getText ());
-        int userId = Integer.parseInt(txt_userId.getText ());
+        int bookId = Integer.parseInt(txt_bookId.getText());
+        int userId = Integer.parseInt(txt_userId.getText());
 
-        try {
-            Connection con = DBConnection.getConnection();
-            String sql = "select * from issue_book_details where book_id = ? and user_id = ? and status = ?";
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(
+                "SELECT * FROM issue_book_details WHERE book_id = ? AND user_id = ? AND status = ?")) {
 
-            PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, bookId);
-            pst.setInt (2, userId);
+            pst.setInt(2, userId);
             pst.setString(3, "pending");
-            
-            ResultSet rs = pst.executeQuery ();
-            if (rs.next ()) {
-                lbl_issueId.setText(rs.getString("id"));
-                lbl_bookName.setText(rs.getString("book_name"));
-                lbl_userName.setText(rs.getString("user_name") );
-                lbl_issueDate.setText(rs.getString("issue_date"));
-                lbl_dueDate.setText(rs.getString("due_date"));
-                lbl_bookError.setText("");
-            } else {
-                lbl_bookError.setText ("No Record Found");
-                lbl_issueId.setText("");
-                lbl_bookName.setText("");
-                lbl_userName.setText("");
-                lbl_issueDate.setText("");
-                lbl_dueDate.setText("");
+
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    lbl_issueId.setText(rs.getString("id"));
+                    lbl_bookName.setText(rs.getString("book_name"));
+
+                    // Apply partial masking to user name
+                    String name = rs.getString("user_name");
+                    int visibleChars = 2;
+                    String maskedName = name.length() > visibleChars
+                            ? name.substring(0, visibleChars) + "****"
+                            : "****";
+
+                    lbl_userName.setText(maskedName);
+                    lbl_issueDate.setText(rs.getString("issue_date"));
+                    lbl_dueDate.setText(rs.getString("due_date"));
+                    lbl_bookError.setText("");
+                } else {
+                    lbl_bookError.setText("No Record Found");
+                    lbl_issueId.setText("");
+                    lbl_bookName.setText("");
+                    lbl_userName.setText("");
+                    lbl_issueDate.setText("");
+                    lbl_dueDate.setText("");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }           
+        }
     }
-    
+
     //return the book
-    
-    public boolean returnBook(){
+    public boolean returnBook() {
         boolean isReturned = false;
-        int bookId = Integer.parseInt(txt_bookId.getText ());
-        int userId = Integer.parseInt(txt_userId.getText ());
+        int bookId = Integer.parseInt(txt_bookId.getText());
+        int userId = Integer.parseInt(txt_userId.getText());
 
         try {
             Connection con = DBConnection.getConnection();
@@ -77,29 +82,29 @@ public class ReturnBook extends javax.swing.JFrame {
             pst.setInt(2, userId);
             pst.setInt(3, bookId);
             pst.setString(4, "pending");
-            
+
             int rowCount = pst.executeUpdate();
             if (rowCount > 0) {
                 isReturned = true;
             } else {
                 isReturned = false;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return isReturned;
     }
-    
+
     //updating book quantity
     public void updateBookQuantity() {
         int bookId = Integer.parseInt(txt_bookId.getText());
-        
+
         try {
             Connection con = DBConnection.getConnection();
             String sql = "update book_details set quantity = quantity + 1 where book_id = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setInt(1, bookId);
-            
+
             int rowCount = pst.executeUpdate();
             if (rowCount > 0) {
                 JOptionPane.showMessageDialog(this, "Book Quantity Updated");
@@ -110,7 +115,6 @@ public class ReturnBook extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -941,7 +945,7 @@ public class ReturnBook extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_userIdActionPerformed
 
     private void rSMaterialButtonCircle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle3ActionPerformed
-    getIssueBookDetails();
+        getIssueBookDetails();
     }//GEN-LAST:event_rSMaterialButtonCircle3ActionPerformed
 
     private void rSMaterialButtonCircle4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSMaterialButtonCircle4ActionPerformed
@@ -973,7 +977,7 @@ public class ReturnBook extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new ReturnBook().setVisible(true));
     }

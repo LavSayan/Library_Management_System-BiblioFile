@@ -22,9 +22,7 @@ public class IssueBookDetails extends javax.swing.JFrame {
     /**
      * Creates new form IssueBookDetails
      */
-    
     DefaultTableModel model;
-    
 
     public IssueBookDetails() {
         initComponents();
@@ -32,18 +30,21 @@ public class IssueBookDetails extends javax.swing.JFrame {
         setOverdueBookDetails();
     }
 
-    //inputs the pending book details in the table
+    // inputs the pending book details in the table
     public void setPendingBookDetails() {
-
-        try {
-            Connection con = DBConnection.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from issue_book_details where status = '"+"pending"+"' ");
+        try (Connection con = DBConnection.getConnection(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery("SELECT * FROM issue_book_details WHERE status = 'pending'")) {
 
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
-                String userName = rs.getString("user_name");
+
+                // Partial masking for user name
+                String userNameRaw = rs.getString("user_name");
+                int visibleChars = 2;
+                String userName = userNameRaw.length() > visibleChars
+                        ? userNameRaw.substring(0, visibleChars) + "****"
+                        : "****";
+
                 String issueDate = rs.getString("issue_date");
                 String dueDate = rs.getString("due_date");
                 String status = rs.getString("status");
@@ -53,39 +54,44 @@ public class IssueBookDetails extends javax.swing.JFrame {
                 model.addRow(obj);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe("Error loading pending book details: " + e.getMessage());
         }
-
     }
-    
-    //inputs the overdue book details in the table
+
+    // inputs the overdue book details in the table
     public void setOverdueBookDetails() {
         long l = System.currentTimeMillis();
         Date currentDate = new Date(l);
-        
-        try {
-            Connection con = DBConnection.getConnection();
-            PreparedStatement pst = con.prepareStatement("select * from issue_book_details where due_date < ? and status = ? ");
+
+        try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement("SELECT * FROM issue_book_details WHERE due_date < ? AND status = ?")) {
+
             pst.setDate(1, currentDate);
             pst.setString(2, "pending");
-            ResultSet rs = pst.executeQuery();
 
-            while (rs.next()) {
-                String id = rs.getString("id");
-                String bookName = rs.getString("book_name");
-                String userName = rs.getString("user_name");
-                String issueDate = rs.getString("issue_date");
-                String dueDate = rs.getString("due_date");
-                String status = rs.getString("status");
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    String id = rs.getString("id");
+                    String bookName = rs.getString("book_name");
 
-                Object[] obj = {id, bookName, userName, issueDate, dueDate, status};
-                model = (DefaultTableModel) tbl_overdueBookDetails.getModel();
-                model.addRow(obj);
+                    // Partial masking for user name
+                    String userNameRaw = rs.getString("user_name");
+                    int visibleChars = 2;
+                    String userName = userNameRaw.length() > visibleChars
+                            ? userNameRaw.substring(0, visibleChars) + "****"
+                            : "****";
+
+                    String issueDate = rs.getString("issue_date");
+                    String dueDate = rs.getString("due_date");
+                    String status = rs.getString("status");
+
+                    Object[] obj = {id, bookName, userName, issueDate, dueDate, status};
+                    model = (DefaultTableModel) tbl_overdueBookDetails.getModel();
+                    model.addRow(obj);
+                }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe("Error loading overdue book details: " + e.getMessage());
         }
-
     }
 
     /**
