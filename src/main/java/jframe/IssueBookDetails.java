@@ -37,19 +37,13 @@ public class IssueBookDetails extends javax.swing.JFrame {
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
-
-                // Partial masking for user name
-                String userNameRaw = rs.getString("user_name");
-                int visibleChars = 2;
-                String userName = userNameRaw.length() > visibleChars
-                        ? userNameRaw.substring(0, visibleChars) + "****"
-                        : "****";
+                String userId = rs.getString("user_id");
 
                 String issueDate = rs.getString("issue_date");
                 String dueDate = rs.getString("due_date");
                 String status = rs.getString("status");
 
-                Object[] obj = {id, bookName, userName, issueDate, dueDate, status};
+                Object[] obj = {id, bookName, userId, issueDate, dueDate, status};
                 model = (DefaultTableModel) tbl_pendingBookDetails.getModel();
                 model.addRow(obj);
             }
@@ -72,19 +66,13 @@ public class IssueBookDetails extends javax.swing.JFrame {
                 while (rs.next()) {
                     String id = rs.getString("id");
                     String bookName = rs.getString("book_name");
-
-                    // Partial masking for user name
-                    String userNameRaw = rs.getString("user_name");
-                    int visibleChars = 2;
-                    String userName = userNameRaw.length() > visibleChars
-                            ? userNameRaw.substring(0, visibleChars) + "****"
-                            : "****";
+                    String userId = rs.getString("user_id");
 
                     String issueDate = rs.getString("issue_date");
                     String dueDate = rs.getString("due_date");
                     String status = rs.getString("status");
 
-                    Object[] obj = {id, bookName, userName, issueDate, dueDate, status};
+                    Object[] obj = {id, bookName, userId, issueDate, dueDate, status};
                     model = (DefaultTableModel) tbl_overdueBookDetails.getModel();
                     model.addRow(obj);
                 }
@@ -155,7 +143,7 @@ public class IssueBookDetails extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Book Id", "Book Name", "User Name", "Issue Date", "Due Date", "Status"
+                "Book Id", "Book Name", "User Id", "Issue Date", "Due Date", "Status"
             }
         ));
         tbl_pendingBookDetails.setColorBackgoundHead(new java.awt.Color(120, 27, 27));
@@ -227,7 +215,7 @@ public class IssueBookDetails extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Book Id", "Book Name", "User Name", "Issue Date", "Due Date", "Status"
+                "Book Id", "Book Name", "User Id", "Issue Date", "Due Date", "Status"
             }
         ));
         tbl_overdueBookDetails.setColorBackgoundHead(new java.awt.Color(120, 27, 27));

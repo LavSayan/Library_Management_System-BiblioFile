@@ -31,10 +31,8 @@ public class ManageMembership extends javax.swing.JFrame {
 
     private void loadMembershipDetails() {
         try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(
-                "SELECT m.record_id, m.user_id, u.name AS user_name, m.start_date, m.end_date, m.status "
-                + "FROM membership_details m "
-                + "JOIN user_details u ON m.user_id = u.user_id "
-                + "WHERE m.membership_type = 'Scribe'")) {
+                "SELECT user_id, user_name, membership_type, start_date, end_date, status FROM membership_details WHERE membership_type = 'Scribe'"
+        )) {
 
             DefaultTableModel model = (DefaultTableModel) tbl_membershipDetails.getModel();
             model.setRowCount(0);
@@ -43,14 +41,14 @@ public class ManageMembership extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                int recordId = rs.getInt("record_id");
                 int userId = rs.getInt("user_id");
                 String userName = rs.getString("user_name");
+                String membershipType = rs.getString("membership_type");
                 Date startDate = rs.getDate("start_date");
                 Date endDate = rs.getDate("end_date");
                 String status = rs.getString("status");
 
-                // Apply partial masking to user name
+                // UI-only masking
                 int visibleChars = 2;
                 String maskedName = userName.length() > visibleChars
                         ? userName.substring(0, visibleChars) + "****"
@@ -59,8 +57,8 @@ public class ManageMembership extends javax.swing.JFrame {
                 // Expiration logic
                 if (endDate.before(today) && !status.equalsIgnoreCase("expired")) {
                     try (PreparedStatement pst1 = con.prepareStatement(
-                            "UPDATE membership_details SET status = 'expired' WHERE record_id = ?")) {
-                        pst1.setInt(1, recordId);
+                            "UPDATE membership_details SET status = 'expired' WHERE user_id = ?")) {
+                        pst1.setInt(1, userId);
                         pst1.executeUpdate();
                     }
 
@@ -82,12 +80,13 @@ public class ManageMembership extends javax.swing.JFrame {
                     }
                 }
 
-                Object[] row = {recordId, userId, maskedName, startDate, endDate, status};
+                Object[] row = {userId, maskedName, membershipType, startDate, endDate, status};
                 model.addRow(row);
             }
 
         } catch (Exception e) {
             logger.severe("Error loading membership details: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error loading membership details: " + e.getMessage());
         }
     }
 
@@ -98,21 +97,31 @@ public class ManageMembership extends javax.swing.JFrame {
             return;
         }
 
-        int recordId = (int) tbl_membershipDetails.getValueAt(selectedRow, 0);
+        int userId = (int) tbl_membershipDetails.getValueAt(selectedRow, 0);
 
-        String sql = "UPDATE membership_details SET status = 'cancelled' WHERE record_id = ?";
+        String sql = "UPDATE membership_details SET status = 'cancelled' WHERE user_id = ? AND membership_type = 'Scribe'";
 
         try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, recordId);
+            pst.setInt(1, userId);
 
             if (pst.executeUpdate() > 0) {
+                // Also downgrade user to Normal
+                try (PreparedStatement pst2 = con.prepareStatement(
+                        "UPDATE user_details SET membership_type = 'Normal' WHERE user_id = ?")) {
+                    pst2.setInt(1, userId);
+                    pst2.executeUpdate();
+                }
+
                 JOptionPane.showMessageDialog(this, "Membership cancelled.");
                 loadMembershipDetails();
+            } else {
+                JOptionPane.showMessageDialog(this, "No active Scribe membership found for this user.");
             }
 
         } catch (Exception e) {
             logger.severe("Error cancelling membership: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error cancelling membership: " + e.getMessage());
         }
     }
 
@@ -156,7 +165,7 @@ public class ManageMembership extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AddNewBookIcons/membership.png"))); // NOI18N
         jLabel2.setText("    Manage Membership");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 370, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 40, 370, -1));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -171,7 +180,7 @@ public class ManageMembership extends javax.swing.JFrame {
             .addGap(0, 5, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 390, 5));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, 390, 5));
 
         btn_cancel.setBackground(new java.awt.Color(255, 255, 255));
         btn_cancel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
@@ -182,7 +191,7 @@ public class ManageMembership extends javax.swing.JFrame {
                 btn_cancelActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 200, 180, 60));
+        jPanel1.add(btn_cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 200, 180, 60));
 
         btn_renew.setBackground(new java.awt.Color(255, 255, 255));
         btn_renew.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
@@ -193,9 +202,9 @@ public class ManageMembership extends javax.swing.JFrame {
                 btn_renewActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_renew, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 180, 60));
+        jPanel1.add(btn_renew, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, 180, 60));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 280));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1150, 280));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(new javax.swing.border.MatteBorder(null));
@@ -208,17 +217,9 @@ public class ManageMembership extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Record Id", "User Id", "User Name", "Start Date", "End Date", "Status"
+                "User Id", "User Name", "Membership Type", "Start Date", "End Date", "Status"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         tbl_membershipDetails.setColorBackgoundHead(new java.awt.Color(120, 27, 27));
         tbl_membershipDetails.setColorFilasForeground1(new java.awt.Color(0, 0, 0));
         tbl_membershipDetails.setColorFilasForeground2(new java.awt.Color(0, 0, 0));
@@ -234,16 +235,12 @@ public class ManageMembership extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbl_membershipDetails);
-        if (tbl_membershipDetails.getColumnModel().getColumnCount() > 0) {
-            tbl_membershipDetails.getColumnModel().getColumn(0).setResizable(false);
-            tbl_membershipDetails.getColumnModel().getColumn(0).setHeaderValue("Record Id");
-        }
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 580));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1150, 580));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 900, 580));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 1150, 580));
 
-        setSize(new java.awt.Dimension(900, 857));
+        setSize(new java.awt.Dimension(1151, 857));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 

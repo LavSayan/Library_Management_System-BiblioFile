@@ -59,14 +59,16 @@ public class IssueBook extends javax.swing.JFrame {
                     if (rs.next()) {
                         lbl_userId.setText(rs.getString("user_id"));
 
-                        // Apply partial masking to name
-                        String name = rs.getString("name");
+                        String fullName = rs.getString("name");
+                        lbl_userName.putClientProperty("fullName", fullName); // store full name invisibly
+
+                        // UI masking only
                         int visibleChars = 2;
-                        String maskedName = name.length() > visibleChars
-                                ? name.substring(0, visibleChars) + "****"
+                        String maskedName = fullName.length() > visibleChars
+                                ? fullName.substring(0, visibleChars) + "****"
                                 : "****";
 
-                        lbl_userName.setText(maskedName);
+                        lbl_userName.setText(maskedName); // display masked name
                         lbl_userError.setText("");
                     } else {
                         lbl_userId.setText("");
@@ -85,15 +87,52 @@ public class IssueBook extends javax.swing.JFrame {
             int bookId = Integer.parseInt(txt_bookId.getText().trim());
             int userId = Integer.parseInt(txt_userId.getText().trim());
             String bookName = lbl_bookName.getText().trim();
-            String userName = lbl_userName.getText().trim();
+            String userName = (String) lbl_userName.getClientProperty("fullName"); // retrieve full name
 
+
+            // Use manually entered dates
             java.sql.Date issueDate = new java.sql.Date(date_issueDate.getDate().getTime());
             java.sql.Date dueDate = new java.sql.Date(date_dueDate.getDate().getTime());
 
+            // Fetch membership type
+            String membershipType = "";
+            try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement("SELECT membership_type FROM user_details WHERE user_id = ?")) {
+                pst.setInt(1, userId);
+                try (ResultSet rs = pst.executeQuery()) {
+                    if (rs.next()) {
+                        membershipType = rs.getString("membership_type");
+                    }
+                }
+            }
+
+            // Count current pending books
+            int currentIssued = 0;
+            try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement("SELECT COUNT(*) FROM issue_book_details WHERE user_id = ? AND status = 'pending'")) {
+                pst.setInt(1, userId);
+                try (ResultSet rs = pst.executeQuery()) {
+                    if (rs.next()) {
+                        currentIssued = rs.getInt(1);
+                    }
+                }
+            }
+
+            // Enforce borrowing limits
+            if ("Normal".equalsIgnoreCase(membershipType)) {
+                if (currentIssued >= 3) {
+                    JOptionPane.showMessageDialog(this, "Normal members can only borrow up to 3 books.");
+                    return false;
+                }
+            } else if ("Scribe".equalsIgnoreCase(membershipType)) {
+                if (currentIssued >= 10) {
+                    JOptionPane.showMessageDialog(this, "Scribe members can only borrow up to 10 books.");
+                    return false;
+                }
+            }
+
+            // Insert record
             String sql = "INSERT INTO issue_book_details (book_id, book_name, user_id, user_name, issue_date, due_date, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
-
                 pst.setInt(1, bookId);
                 pst.setString(2, bookName);
                 pst.setInt(3, userId);

@@ -819,8 +819,8 @@ public class ManageOrder extends javax.swing.JFrame {
 
             try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(
                     "INSERT INTO order_details (order_id, user_id, user_name, membership_type, order_date, original_price, discounted_price, cash_paid, balance, status) "
-                    + "VALUES (?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)")) {
-
+                    + "VALUES (?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)"
+            )) {
                 pst.setString(1, orderId);
                 pst.setInt(2, customerPk);
                 pst.setString(3, txt_userName.getText().trim());
@@ -831,10 +831,12 @@ public class ManageOrder extends javax.swing.JFrame {
                 pst.setInt(8, Integer.parseInt(lbl_balance.getText().trim()));
                 pst.setString(9, "completed");
 
-                pst.executeUpdate();
-
-            } catch (Exception dbEx) {
-                JOptionPane.showMessageDialog(null, "Error saving order to database: " + dbEx.getMessage());
+                int rowsInserted = pst.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Order saved successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No rows inserted. Check your SQL and data.");
+                }
             }
 
             // Try opening the PDF

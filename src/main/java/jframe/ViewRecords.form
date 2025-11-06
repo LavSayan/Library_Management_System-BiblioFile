@@ -349,7 +349,7 @@
                   <Table columnCount="6" rowCount="0">
                     <Column editable="true" title="Record Id" type="java.lang.Object"/>
                     <Column editable="true" title="Book Name" type="java.lang.Object"/>
-                    <Column editable="true" title="User Name" type="java.lang.Object"/>
+                    <Column editable="true" title="User Id" type="java.lang.Object"/>
                     <Column editable="true" title="Issue Date" type="java.lang.Object"/>
                     <Column editable="true" title="Due Date" type="java.lang.Object"/>
                     <Column editable="true" title="Status" type="java.lang.Object"/>

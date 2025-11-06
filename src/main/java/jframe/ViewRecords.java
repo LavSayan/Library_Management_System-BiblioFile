@@ -44,13 +44,7 @@ public class ViewRecords extends javax.swing.JFrame {
             while (rs.next()) {
                 String id = rs.getString("id");
                 String bookName = rs.getString("book_name");
-
-                // Mask user name
-                String userName = rs.getString("user_name");
-                int visibleChars = 2;
-                String maskedUserName = userName.length() > visibleChars
-                        ? userName.substring(0, visibleChars) + "****"
-                        : "****";
+                String userId = rs.getString("user_id");
 
                 Timestamp issueTs = rs.getTimestamp("issue_date");
                 Timestamp dueTs = rs.getTimestamp("due_date");
@@ -60,7 +54,7 @@ public class ViewRecords extends javax.swing.JFrame {
 
                 String status = rs.getString("status");
 
-                Object[] obj = {id, bookName, maskedUserName, issueDate, dueDate, status};
+                Object[] obj = {id, bookName, userId, issueDate, dueDate, status};
                 model.addRow(obj);
             }
 
@@ -124,13 +118,8 @@ public class ViewRecords extends javax.swing.JFrame {
                     found = true;
                     String id = rs.getString("id");
                     String bookName = rs.getString("book_name");
+                    String userId = rs.getString("user_id");
 
-                    // Mask user name
-                    String userName = rs.getString("user_name");
-                    int visibleChars = 2;
-                    String maskedUserName = userName.length() > visibleChars
-                            ? userName.substring(0, visibleChars) + "****"
-                            : "****";
 
                     Timestamp issueTs = rs.getTimestamp("issue_date");
                     Timestamp dueTs = rs.getTimestamp("due_date");
@@ -140,7 +129,7 @@ public class ViewRecords extends javax.swing.JFrame {
 
                     String status = rs.getString("status");
 
-                    Object[] obj = {id, bookName, maskedUserName, issueDate, dueDate, status};
+                    Object[] obj = {id, bookName, userId, issueDate, dueDate, status};
                     model.addRow(obj);
                 }
 
@@ -307,7 +296,7 @@ public class ViewRecords extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Record Id", "Book Name", "User Name", "Issue Date", "Due Date", "Status"
+                "Record Id", "Book Name", "User Id", "Issue Date", "Due Date", "Status"
             }
         ));
         tbl_issueBookDetails.setColorBackgoundHead(new java.awt.Color(120, 27, 27));
